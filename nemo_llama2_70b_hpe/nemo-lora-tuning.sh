@@ -6,7 +6,7 @@ MODEL="/gcs-dir/data/model"  # set your </path/to/dataset>
 #LOGDIR="</path/to/output_logdir>"  # set the place where the output logs will be saved
 #export CONT=<docker/registry>/mlperf-nvidia:llama2_70b_lora-pyt
 source /usr/local/gib/scripts/set_nccl_env.sh
-source config_XE9680lx8H200-SXM-141GB_1x8x2xtp1pp1cp2.sh  # select config and source it
+source configs/config_XD670_H200_1x8x2xtp2pp1cp1.sh  # select config and source it
 # --- GKE-specific environment variables ---
 MASTER_ADDR="train-workers-0-0.train"
 MASTER_PORT=3389
@@ -42,9 +42,9 @@ NUM_NODES="$NODE_COUNT"
 : "${EXTRA_ASSETS:=}"
 : "${MODEL_NAME:='llama2_70b'}"
 
-unset NVTE_FLASH_ATTN                                                                                                                                                  │
-unset NVTE_FUSED_ATTN                                                                                                                                                  │
-unset NVTE_UNFUSED_ATTN    
+#unset NVTE_FLASH_ATTN                                                                                                                                                  │
+#unset NVTE_FUSED_ATTN                                                                                                                                                  │
+#unset NVTE_UNFUSED_ATTN    
 # --- Paths ---
 #DATA_DIR="/gcs-dir/hf-data"
 #MODEL_PATH="/gcs-dir/llama-7b"

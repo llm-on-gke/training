@@ -3,10 +3,10 @@ kind: JobSet
 metadata:
   #namespace: default
   name: train
-  #labels:
-  #     kueue.x-k8s.io/queue-name: dws-local-queue
-  #annotations:
-  #    provreq.kueue.x-k8s.io/maxRunDurationHours: "10"
+  labels:
+      kueue.x-k8s.io/queue-name: dws-local-queue
+  annotations:
+      provreq.kueue.x-k8s.io/maxRunDurationHours: "2"
   #annotations:
   #  kueue.x-k8s.io/queue-name: ${K8S_LOCAL_QUEUE}
 spec:
@@ -19,7 +19,7 @@ spec:
         parallelism: 4
         completions: 4
         backoffLimit: 0
-        #suspend: true #dws
+        suspend: true #dws
         template:
           metadata:
             annotations:
@@ -42,8 +42,8 @@ spec:
           spec:
             #dnsPolicy: ClusterFirstWithHostNet
             nodeSelector:
-              #cloud.google.com/gke-nodepool:  a3-ultragpu-8g-a3-ultragpu-pool #dws
-              cloud.google.com/gke-accelerator: nvidia-h200-141gb
+              cloud.google.com/gke-nodepool:  a3-ultragpu-8g-a3-ultragpu-pool #dws
+              #cloud.google.com/gke-accelerator: nvidia-h200-141gb
             tolerations:
             #- key: cloud.google.com/gke-queued
             #  effect: NoSchedule

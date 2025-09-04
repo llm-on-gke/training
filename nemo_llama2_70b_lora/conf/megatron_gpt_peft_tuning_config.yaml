@@ -1,6 +1,6 @@
 defaults:
   - _self_
-  - optional tp_overlap@model.ub_tp_comm_overlap_cfg: h100tp2mbs1.yaml #${oc.env:GPU_ARCH,b}100tp${oc.env:TP}mbs${oc.env:MBS}
+  - optional tp_overlap@model.ub_tp_comm_overlap_cfg: h100tp8mbs1.yaml #${oc.env:GPU_ARCH,b}100tp${oc.env:TP}mbs${oc.env:MBS}
 
 # skip_evals = floor(0.125 * model.global_batch_size + 2)
 skip_evals: ${oc.decode:${oc.env:SKIP_EVAL,${floor:${add:${multiply:0.125,${model.global_batch_size}},2}}}}

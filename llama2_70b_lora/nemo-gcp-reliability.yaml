@@ -16,8 +16,8 @@ spec:
   - name: workers
     template:
       spec:
-        parallelism: 4
-        completions: 4
+        parallelism: 2
+        completions: 2
         backoffLimit: 0
         #suspend: true #dws
         template:
@@ -60,16 +60,23 @@ spec:
             - name: gib
               hostPath:
                 path: /home/kubernetes/bin/gib
+            - name: data
+              emptyDir: {}
+            - name: hf-cache
+              emptyDir: {}
+            - name: model-cache
+              emptyDir: {}
+            - name: output
+              emptyDir: {}
             - name: dshm
               emptyDir:
                 medium: Memory
-                sizeLimit: 256Gi
             - name: gcs-fuse-csi-ephemeral-data
               csi:
                 driver: gcsfuse.csi.storage.gke.io
                 volumeAttributes:
                   bucketName: rick-mlperf
-                  mountOptions: "only-dir=dp-perf,implicit-dirs"
+                  mountOptions: "only-dir=data/gov_report,implicit-dirs"
                   fileCacheCapacity: "-1Mi"
                   fileCacheForRangeRead: "true"
                   metadataCacheTTLSeconds: "-1"
@@ -81,101 +88,126 @@ spec:
                 driver: gcsfuse.csi.storage.gke.io
                 volumeAttributes:
                   bucketName: rick-mlperf
-                  mountOptions: "only-dir=llama-7b,implicit-dirs"
+                  mountOptions: "only-dir=data/model,implicit-dirs"
                   fileCacheCapacity: "-1Mi"
                   fileCacheForRangeRead: "true"
                   metadataCacheTTLSeconds: "-1"
                   metadataNegativeCacheTTLSeconds: "0"
                   metadataStatCacheCapacity: "-1Mi"
                   metadataTypeCacheCapacity: "-1Mi"
-            - name: gcs-fuse-writing
+            - name: gcs-fuse-csi-ephemeral
               csi:
                 driver: gcsfuse.csi.storage.gke.io
+                readOnly: false
                 volumeAttributes:
-                  bucketName: rick-mlperf
-                  mountOptions: "only-dir=dp-mlperf/output,implicit-dirs"
-                  fileCacheCapacity: "-1Mi"
-                  fileCacheForRangeRead: "true"
-                  metadataCacheTTLSeconds: "-1"
-                  metadataNegativeCacheTTLSeconds: "0"
-                  metadataStatCacheCapacity: "-1Mi"
-                  metadataTypeCacheCapacity: "-1Mi"
-            - name: local-checkpoints-storage
-              emptyDir: {}
+                   bucketName: rick-mlperf
+                   mountOptions: "implicit-dirs"
+                   fileCacheCapacity: "-1Mi"
+                   fileCacheForRangeRead: "true"
+                   metadataCacheTTLSeconds: "-1"
+                   metadataNegativeCacheTTLSeconds: "0"
+                   metadataStatCacheCapacity: "-1Mi"
+                   metadataTypeCacheCapacity: "-1Mi"
+            - name: local-ssd
+              hostPath:
+                path: /mnt/stateful_partition/kube-ephemeral-ssd
             containers:
-            - name: worker
-              image: us-east1-docker.pkg.dev/gpu-launchpad-playground/gke-llm/dp-repro:latest
+            - name: pytorch
+              image: us-central1-docker.pkg.dev/deeplearning-images/reproducibility/pytorch-gpu-nemo-nccl:nemo25.04-gib1.0.6-A3U #us-east1-docker.pkg.dev/gpu-launchpad-playground/gke-llm/mlperf-nvidia:llama2_70b_lora-pyt
               imagePullPolicy: Always
+              # image: gcr.io/k8s-staging-jobset/pytorch-mnist:latest
               ports:
-              - containerPort: 3389
+               - containerPort: 3389
               env:
-              - name: HOSTNAME_PREFIX
+              - name: HF_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: huggingface
+                    key: HF_TOKEN
+              - name: HUGGING_FACE_HUB_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                     name: huggingface
+                     key: HF_TOKEN
+              - name: MASTER_ADDR
+                value: "train-workers-0-0.train.default.svc.cluster.local"
+              - name: hostname_prefix
                 valueFrom:
                   fieldRef:
                     fieldPath: metadata.annotations['jobset.sigs.k8s.io/jobset-name']
-              - name: HOSTNAME_SUFFIX
+              - name: hostname_suffix
                 valueFrom:
                   fieldRef:
                     fieldPath: metadata.annotations['jobset.sigs.k8s.io/replicatedjob-name']
-              - name: MASTER_ADDR
-                value: "train-workers-0-0.train"
+ 
               - name: MASTER_PORT
                 value: "3389"
               - name: NODE_COUNT
-                value: "4"
+                value: "2"
               - name: NODE_RANK
                 valueFrom:
                   fieldRef:
                     fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
+              # Force python to not buffer output and write directly to stdout, so we can view training logs via `kubectl logs`.
               - name: PYTHONUNBUFFERED
                 value: "0"
-              - name: NCCL_DEBUG
-                value: DEBUG
               - name: LD_LIBRARY_PATH
                 value: /usr/local/nvidia/lib64
+              - name: TORCH_DISTRIBUTED_BACKEND
+                value: "nccl"
+              - name: NVTE_FWD_LAYERNORM_SM_MARGIN
+                value: "8"
+              - name: NVTE_BWD_LAYERNORM_SM_MARGIN
+                value: "8"
+              - name: CUDA_DEVICE_MAX_CONNECTIONS
+                value: "1"
+              - name: GLOO_SOCKET_IFNAME
+                value: "eth0"
+              - name: JOB_IDENTIFIER
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.annotations['jobset.sigs.k8s.io/jobset-name']
+              securityContext:
+                privileged: true
               command: ["/bin/bash", "-c"]
               args:
               - |
                 set -e
+                ldconfig $LD_LIBRARY_PATH
+                #echo "Added $LD_LIBRARY_PATH to ldconfig:"
+                ldconfig -p | grep libcuda | sed 's/^/  /'
+                echo ""
+                git clone https://github.com/llm-on-gke/training/
+                #sleep infinity
+                cd  training/nemo_llama2_70b_lora
+                pip install -r requirements.txt
                 
-                chmod +x /app/training.sh
-                NUM_GPU_PER_NODE=8
-                echo "Starting training, saving checkpoints to /mnt/local-checkpoints"
-                bash /app/training.sh "\${MASTER_ADDR}" "\${MASTER_PORT}" "\${NODE_RANK}" "\${NODE_COUNT}" "$NUM_GPU_PER_NODE" "8" "1024" "16"
-                echo "Training finished. Copying checkpoints to persistent storage."
-                # Only the rank 0 node should perform the copy to avoid race conditions.
-                if [ "\${NODE_RANK}" -eq 0 ]; then
-                  # rsync is often safer and more efficient than cp
-                  gsutil rsync -r /mount/local-checkpoints/ gs://talkiq-data-temp-30d/"\${GCS_OUTPUT_DIR}"
-                  echo "Copy complete."
-                else
-                  echo "Not rank 0, skipping copy."
-                fi
-              volumeMounts:
-              - name: library-dir-host
-                mountPath: /usr/local/nvidia
-                readOnly: true
-              - name: gib
-                mountPath: /usr/local/gib
-                readOnly: true
-              - name: gcs-fuse-csi-ephemeral-data
-                mountPath: /mount/data
-                readOnly: true
-              - name: gcs-fuse-csi-ephemeral-model
-                mountPath: /mount/base-model
-                readOnly: true
-              - name: gcs-fuse-writing
-                mountPath: /mount/models
-              - name: dshm
-                mountPath: /dev/shm
-              - name: local-checkpoints-storage
-                mountPath: /mount/local-checkpoints
+                bash nemo-lora-tuning.sh
               resources:
                 requests:
-                  #cpu: ${NUM_CPU_CORES}
-                  #memory: ${NUM_MEMORY}
                   nvidia.com/gpu: 8
                 limits:
-                  #cpu: ${NUM_CPU_CORES}
-                  #memory: ${NUM_MEMORY}
                   nvidia.com/gpu: 8
+              volumeMounts:
+               - name: library-dir-host
+                 mountPath: /usr/local/nvidia
+               - name: gib
+                 mountPath: /usr/local/gib
+               - name: dshm
+                 mountPath: /dev/shm
+               - name: hf-cache
+                 mountPath: /root/.cache/huggingface
+               - name: model-cache
+                 mountPath: /root/.cache/modelscope
+               - name: output
+                 mountPath: /app/output
+               - mountPath: /gcs-dir
+                 name: gcs-fuse-csi-ephemeral
+               - mountPath: /data
+                 name: gcs-fuse-csi-ephemeral-data
+               - mountPath: /ckpt
+                 name: gcs-fuse-csi-ephemeral-model
+               - name: local-ssd
+                 mountPath: /localssd
+               
+           

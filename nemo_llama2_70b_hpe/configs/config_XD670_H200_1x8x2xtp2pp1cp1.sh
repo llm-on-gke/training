@@ -14,22 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $(dirname ${BASH_SOURCE[0]})/config_XE9680lx8H200-SXM-141GB_config_common.sh #config_common.sh
+#source $(dirname ${BASH_SOURCE[0]})/config_common.sh
+source $(dirname ${BASH_SOURCE[0]})/config_XD670_common.sh
+export SUBMISSION_ORG=HPE
+export MLPERF_SUBMITTER=HPE
+export MLPERF_SYSTEM_NAME="HPE Cray XD670"
+export MLPERF_STATUS="Available onprem"
+export MLPERF_DIVISION=closed
+export MLPERF_NUM_NODES=1
 
 # hyperparameters
-export MAX_STEPS=1024 #896
+export MAX_STEPS=1024
 export LR=0.0005
 export MINIBS=2
-export TP=8 #1
-export CP=1 #2
-export SP=0
+export TP=8
+export CP=1
 export SKIP_EVALS=3
 export NVTE_FLASH_ATTN=0
 export NVTE_FUSED_ATTN=1
 export CUDNN_FRONTEND_ATTN_DP_WORKSPACE_LIMIT=0
 export VBOOST_VALUE=1
 export FP8_ACTIVATION=True 
-export FP8_DPA=0
+export FP8_DPA=1
 export NVTE_FP8_DPA_BWD=1
 export TP_COMM_OVERLAP=1
 export NCCL_MIN_CTAS=32
@@ -37,8 +43,5 @@ export UCX_TLS=self,tcp
 
 # system parameters
 export DGXNNODES=2
-export WALLTIME_RUNANDTIME=UNLIMITED
-export WALLTIME=UNLIMITED
-
-#export WALLTIME_RUNANDTIME=50
-#export WALLTIME=$((5 + ${NEXP:-1} * ($WALLTIME_RUNANDTIME + 5)))
+export WALLTIME_RUNANDTIME=50
+export WALLTIME=$((5 + ${NEXP:-1} * ($WALLTIME_RUNANDTIME + 5)))

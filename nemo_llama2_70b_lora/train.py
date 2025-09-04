@@ -34,7 +34,7 @@ import torch
 from omegaconf import DictConfig
 from omegaconf.omegaconf import OmegaConf
 
-torch.cuda.set_device(int(os.getenv("SLURM_LOCALID", "0")))
+torch.cuda.set_device(int(os.getenv("NODE_RANK", "0")))
 
 import gc
 
@@ -284,7 +284,7 @@ def prepare_training_strategy(
         fp8="hybrid",
         fp8_amax_history_len=cfg.model.fp8_amax_history_len,
         fp8_amax_compute_algo=cfg.model.fp8_amax_compute_algo,
-        fp8_params=cfg.model.fp8_params,
+        #fp8_params=cfg.model.fp8_params,
         fp8_dot_product_attention=cfg.model.fp8_dot_product_attention,
     )
     
