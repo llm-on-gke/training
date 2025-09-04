@@ -250,7 +250,7 @@ def prepare_training_strategy(
         with self.precision_plugin.val_step_context():
             out = self.model.validation_step(dataloader_iter, *args, **kwargs)
             self.lightning_module.log("val_loss_sum", out[0], reduce_fx="sum")
-            self.lightning_module.log("val_loss_count", out[1], reduce_fx="sum")
+            #self.lightning_module.log("val_loss_count", out[1], reduce_fx="sum")
             #if out is not None and len(out) > 1 and out[1] is not None and "loss_sum_and_ub_size" in out[1] and len(out[1]["loss_sum_and_ub_size"]) > 1:  
             #  self.lightning_module.log("val_loss_sum", out[1]["loss_sum_and_ub_size"][0], reduce_fx="sum")
             #  self.lightning_module.log("val_loss_count", out[1]["loss_sum_and_ub_size"][1], reduce_fx="sum")

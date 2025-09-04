@@ -27,7 +27,7 @@ model:
   max_position_embeddings: ${oc.decode:${oc.env:MAX_SEQLEN,8192}}
   encoder_seq_length: ${oc.decode:${oc.env:MAX_SEQLEN,8192}}
   sequence_parallel: true
-  ub_tp_comm_overlap: true
+  ub_tp_comm_overlap: false
 
   ## Transformer Engine
   fp8: true
