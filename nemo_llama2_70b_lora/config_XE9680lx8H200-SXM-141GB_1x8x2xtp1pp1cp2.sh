@@ -54,3 +54,7 @@ export FP8_AMAX_ALGO=max
 export FP8_REDUCE_AMAX=True
 export FP8_AMAX_HISTORY=4
 export FP8_DPA=1
+
+export WARMUP=True
+export WARMUP_TRAIN_STEPS=5
+export WARMUP_VALIDATION_STEPS=5
