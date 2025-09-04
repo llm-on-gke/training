@@ -20,7 +20,7 @@
 export MAX_STEPS=1024 #896
 export LR=0.0005
 export MINIBS=1
-export TP=8 #1
+export TP=4 #1
 export PP=2 # add
 export CP=1 #2
 export SP=0
@@ -43,3 +43,13 @@ export WALLTIME=UNLIMITED
 
 #export WALLTIME_RUNANDTIME=50
 #export WALLTIME=$((5 + ${NEXP:-1} * ($WALLTIME_RUNANDTIME + 5)))
+
+export MBS=1
+export VAL_MBS=1
+export VAL_CHECK_INTERVAL=384
+
+export FP8=True
+export FP8_AMAX_ALGO=max
+export FP8_REDUCE_AMAX=True
+export FP8_AMAX_HISTORY=4
+export FP8_DPA=1
