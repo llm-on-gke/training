@@ -94,16 +94,29 @@ if [ "${NVTX_FLAG:-0}" -eq 1 ]; then
     NSYSCMD="nsys profile --sample=cpu --cuda-graph-trace=node --cpuctxsw=none --trace=cuda,nvtx -f true --stats true -o ${NSYS_OUT}"
 fi
 
-OMP_NUM_THREADS=8 torchrun \
---nproc-per-node="$DGXNGPU" \
---nnodes="${NUM_NODES}" \
---node_rank="${NODE_RANK}" \
---rdzv_id="${JOB_IDENTIFIER}" \
---rdzv_backend static \
---master_addr="${MASTER_ADDR}" \
---master_port="${MASTER_PORT}" \
-train.py 
+: "${LOGGER:=""}"
+if [[ -n "${APILOG_DIR:-}" ]]; then
+    if [ "$node_rank" -eq 0 ] && [ "$local_rank" -eq 0 ]; then
+      LOGGER="apiLog.sh -p /gcs-dir/MLPerf_logs/${MODEL_NAME} -v ${FRAMEWORK}/train/${DGXSYSTEM}"
+    fi
+fi
+(
+ set +e
+ echo "RUNANDTIME_START $(date +%s)"
 
+ ${LOGGER:-} OMP_NUM_THREADS=8 torchrun \
+ --nproc-per-node="$DGXNGPU" \
+ --nnodes="${NUM_NODES}" \
+ --node_rank="${NODE_RANK}" \
+ --rdzv_id="${JOB_IDENTIFIER}" \
+ --rdzv_backend static \
+ --master_addr="${MASTER_ADDR}" \
+ --master_port="${MASTER_PORT}" \
+ train.py 
+
+ echo "RUNANDTIME_STOP $(date +%s)"
+ set -e
+) |& tee "/gcs-dir/MLPerf_logs/_$(date +%s).log"
 #CMD=( ${NSYSCMD} 'torchrun' \
 ##    --nproc_per_node=$DGXNGPU \
 #    --nnodes=$NUM_NODES \
