@@ -19,7 +19,7 @@
 # hyperparameters
 export MAX_STEPS=1024 #896
 export LR=0.0005
-export MINIBS=1
+export MINIBS=4 #1
 export TP=4 #1
 export PP=1 # add
 export CP=2 #2
@@ -45,7 +45,7 @@ export WALLTIME=UNLIMITED
 #export WALLTIME_RUNANDTIME=50
 #export WALLTIME=$((5 + ${NEXP:-1} * ($WALLTIME_RUNANDTIME + 5)))
 
-export MBS=2 #1``
+export MBS=1 #1``
 export VAL_MBS=1
 export VAL_CHECK_INTERVAL=384
 
