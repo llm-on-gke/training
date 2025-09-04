@@ -252,9 +252,19 @@ def prepare_training_strategy(
             #self.lightning_module.log("val_loss_sum", out[0], reduce_fx="sum")
             #self.lightning_module.log("val_loss_count", out[1], reduce_fx="sum")
             if out is not None:
-                val_loss, _ = out
-                self.lightning_module.log("val_loss", val_loss, reduce_fx="mean")
-            return out
+            # Many NeMo models return (loss, num_items) tuple
+              if isinstance(out, tuple) and len(out) == 2:
+                loss, num_items = out
+                self.lightning_module.log("val_loss", loss, reduce_fx="mean")
+                # You might also want to log other metrics
+              elif isinstance(out, torch.Tensor):
+                # Single loss tensor
+                self.lightning_module.log("val_loss", out, reduce_fx="mean")
+              else:
+                # Handle other cases or log warning
+                logging.warning(f"Unexpected validation output format: {type(out)}")
+        
+        return out
 
     nl.MegatronStrategy.validation_step = validation_step_patch
 
