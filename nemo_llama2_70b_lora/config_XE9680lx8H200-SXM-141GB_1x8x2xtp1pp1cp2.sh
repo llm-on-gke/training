@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $(dirname ${BASH_SOURCE[0]})/config_XE9680lx8H200-SXM-141GB_config_common.sh #config_common.sh
+#source $(dirname ${BASH_SOURCE[0]})/config_common.sh
 
 # hyperparameters
 export MAX_STEPS=1024 #896
