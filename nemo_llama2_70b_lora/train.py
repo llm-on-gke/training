@@ -245,13 +245,14 @@ def prepare_model(tokenizer: AutoTokenizer, cfg: DictConfig):
 
 def prepare_training_strategy(
     cfg: DictConfig
-) -> tuple[nl.MegatronStrategy, nl.MegatronMixedPrecision, MegatronCommOverlapCallback]:
+) -> tuple[nl.MegatronStrategy, nl.MegatronMixedPrecision]:
+#) -> tuple[nl.MegatronStrategy, nl.MegatronMixedPrecision, MegatronCommOverlapCallback]:
     def validation_step_patch(self, dataloader_iter, *args, **kwargs):
         with self.precision_plugin.val_step_context():
             out = self.model.validation_step(dataloader_iter, *args, **kwargs)
-            #self.lightning_module.log("val_loss_sum", out[0], reduce_fx="sum")
-            #self.lightning_module.log("val_loss_count", out[1], reduce_fx="sum")
-            if out is not None:
+            self.lightning_module.log("val_loss_sum", out[0], reduce_fx="sum")
+            self.lightning_module.log("val_loss_count", out[1], reduce_fx="sum")
+            if out is None:
                 # Many NeMo models return (loss, num_items) tuple
                 if isinstance(out, tuple) and len(out) == 2:
                     loss, num_items = out
@@ -318,16 +319,16 @@ def prepare_training_strategy(
         )
         tp_comm_overlap_cfg = TPCommOverlapConfig(**tp_comm_overlap_cfg)
 
-    overlap_callback = MegatronCommOverlapCallback(
-        tp_comm_overlap=cfg.model.ub_tp_comm_overlap,
-        tp_comm_overlap_cfg=tp_comm_overlap_cfg,
-        overlap_grad_reduce=cfg.ddp.overlap_grad_reduce,
-        overlap_param_gather=cfg.ddp.overlap_param_gather,
-        overlap_param_gather_with_optimizer_step=cfg.optim.overlap_param_gather_with_optimizer_step,
-    )
+    #overlap_callback = MegatronCommOverlapCallback(
+    #    tp_comm_overlap=cfg.model.ub_tp_comm_overlap,
+    #    tp_comm_overlap_cfg=tp_comm_overlap_cfg,
+    #    overlap_grad_reduce=cfg.ddp.overlap_grad_reduce,
+    #    overlap_param_gather=cfg.ddp.overlap_param_gather,
+    #    overlap_param_gather_with_optimizer_step=cfg.optim.overlap_param_gather_with_optimizer_step,
+    #)
 
-    return strategy, precision, overlap_callback
-
+    #return strategy, precision, overlap_callback
+    return strategy, precision
 
 OmegaConf.register_new_resolver("add", lambda x, y: x + y)
 OmegaConf.register_new_resolver("floor_div", lambda x, y: x // y)
@@ -362,8 +363,8 @@ def main(cfg: DictConfig) -> None:
     )
 
     peft, model, resume = prepare_model(tokenizer=tokenizer, cfg=cfg)
-    strategy, precision, overlap_callback = prepare_training_strategy(cfg)
-
+    #strategy, precision, overlap_callback = prepare_training_strategy(cfg)
+    strategy, precision = prepare_training_strategy(cfg)
     logger = MetricsLogger(cfg, model)
     custom_callback = logger.callback
 
@@ -389,7 +390,7 @@ def main(cfg: DictConfig) -> None:
         enable_progress_bar=False,
         use_distributed_sampler=False,
         log_every_n_steps=0,
-        callbacks=[overlap_callback],
+        #callbacks=[overlap_callback],
         logger=logger,
     )
     logger.set_trainer(trainer)
