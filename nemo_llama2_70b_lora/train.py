@@ -249,7 +249,7 @@ def prepare_training_strategy(
     def validation_step_patch(self, dataloader_iter, *args, **kwargs):
         with self.precision_plugin.val_step_context():
             out = self.model.validation_step(dataloader_iter, *args, **kwargs)
-            self.lightning_module.log("val_loss_sum", out.item(), reduce_fx="sum")                                                                                         │
+            self.lightning_module.log("val_loss_sum", out.item(), reduce_fx="sum")
             self.lightning_module.log("val_loss_count", 1, reduce_fx="sum")         
             return out
 
