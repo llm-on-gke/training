@@ -21,6 +21,7 @@ export MAX_STEPS=1024 #896
 export LR=0.0005
 export MINIBS=1
 export TP=8 #1
+export PP=2 # add
 export CP=1 #2
 export SP=0
 export SKIP_EVALS=3

@@ -10,22 +10,22 @@ ckpt_root: ${oc.decode:${oc.env:CKPT_ROOT,/ckpt}}
 trainer:
   devices: 8
   num_nodes: ${oc.decode:${oc.env:NODE_COUNT,1}}
-  max_steps: 30
+  max_steps: 1024
   val_check_interval: 200
   limit_val_batches: 5
 model:
   num_layers: 80
   seed: 1234
-  tensor_model_parallel_size: 8
-  pipeline_model_parallel_size: 1
-  context_parallel_size: 1
+  tensor_model_parallel_size: ${oc.decode:${oc.env:TP,1}}
+  pipeline_model_parallel_size: ${oc.decode:${oc.env:PP,1}}
+  context_parallel_size: ${oc.decode:${oc.env:CP,1}}
   eval_cp: ${oc.decode:${oc.env:CP_EVAL,null}}
-  global_batch_size: 1024
-  micro_batch_size: 2
+  global_batch_size: ${floor_div:${multiply:${oc.decode:${oc.env:MINIBS,1}},${floor_div:${multiply:${trainer.devices},${trainer.num_nodes}},${multiply:${model.tensor_model_parallel_size},${model.pipeline_model_parallel_size}}}},${oc.decode:${oc.env:CP,1}}}
+  micro_batch_size: ${oc.decode:${oc.env:MBS,1}}
   val_micro_batch_size: ${oc.decode:${oc.env:VAL_MBS,null}}
   val_global_batch_size: ${floor_div:${multiply:${oc.decode:${oc.env:VAL_MBS,1}},${floor_div:${multiply:${trainer.devices},${trainer.num_nodes}},${multiply:${model.tensor_model_parallel_size},${model.pipeline_model_parallel_size}}}},${oc.decode:${oc.env:CP_EVAL,${oc.env:CP,1}}}}
-  max_position_embeddings: 8192
-  encoder_seq_length: 8192
+  max_position_embeddings: ${oc.decode:${oc.env:MAX_SEQLEN,8192}}
+  encoder_seq_length: ${oc.decode:${oc.env:MAX_SEQLEN,8192}}
   sequence_parallel: true
   ub_tp_comm_overlap: false
 
