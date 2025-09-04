@@ -19,7 +19,7 @@
 # hyperparameters
 export MAX_STEPS=1024 #896
 export LR=0.0005
-export MINIBS=2
+export MINIBS=1
 export TP=8 #1
 export CP=1 #2
 export SP=0
