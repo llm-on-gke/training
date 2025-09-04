@@ -252,7 +252,8 @@ def prepare_training_strategy(
             #self.lightning_module.log("val_loss_sum", out[0], reduce_fx="sum")
             #self.lightning_module.log("val_loss_count", out[1], reduce_fx="sum")
             if out is not None:
-                self.lightning_module.log("val_loss", out, reduce_fx="mean")
+                val_loss, _ = out
+                self.lightning_module.log("val_loss", val_loss, reduce_fx="mean")
             return out
 
     nl.MegatronStrategy.validation_step = validation_step_patch
