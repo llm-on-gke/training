@@ -246,7 +246,7 @@ def prepare_model(tokenizer: AutoTokenizer, cfg: DictConfig):
         )
         resume = AutoResume(restore_config=restore_config)
 
-    return peft, model
+    return peft, model, resume
 
 
 def prepare_training_strategy(
@@ -347,7 +347,7 @@ def main(cfg: DictConfig) -> None:
         overlap_param_gather_with_optimizer_step=cfg.optim.overlap_param_gather_with_optimizer_step,
     )
 
-    peft, model = prepare_model(tokenizer=tokenizer, cfg=cfg)
+    peft, model, resume = prepare_model(tokenizer=tokenizer, cfg=cfg)
     strategy, precision, overlap_callback = prepare_training_strategy(cfg)
 
     logger = MetricsLogger(cfg, model)
