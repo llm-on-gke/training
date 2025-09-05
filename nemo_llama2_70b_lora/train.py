@@ -234,6 +234,18 @@ def prepare_model(tokenizer: AutoTokenizer, cfg: DictConfig):
     llama2_config.cp_eval = cfg.model.eval_cp
     model = CustomLlamaModel(llama2_config, tokenizer=tokenizer)
 
+    resume = None
+    if cfg.load_ckpt:
+        print("LOADING CHECKPOINT--------------------")
+        restore_config = RestoreConfig(
+            path=cfg.ckpt_root,
+            adapter_path=None,
+            load_model_state=True,
+            load_optim_state=False,
+            load_artifacts=False,
+        )
+        resume = AutoResume(restore_config=restore_config)
+
     return peft, model
 
 
@@ -369,18 +381,6 @@ def main(cfg: DictConfig) -> None:
     logger.set_trainer(trainer)
     logger.log_hyperparams()
     model.custom_callback = custom_callback
-
-    resume = None
-    if cfg.load_ckpt:
-        print("LOADING CHECKPOINT--------------------")
-        restore_config = RestoreConfig(
-            path=cfg.ckpt_root,
-            adapter_path=None,
-            load_model_state=True,
-            load_optim_state=False,
-            load_artifacts=False,
-        )
-        resume = AutoResume(restore_config=restore_config)
 
     # called for its side effects, connects model, optimizer, and data module to traininer. 
     _ = _setup(
