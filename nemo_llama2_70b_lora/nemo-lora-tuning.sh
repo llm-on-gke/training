@@ -112,12 +112,15 @@ fi
  set +e
  echo "RUNANDTIME_START $(date +%s)"
 
- declare -a CMD
- PYTORCH_CUDA_ALLOC_CONF='expandable_segments:True' 
- CMD="OMP_NUM_THREADS=8 torchrun --nproc-per-node=$DGXNGPU --nnodes=${NUM_NODES} --node_rank=${NODE_RANK} --rdzv_id=${JOB_IDENTIFIER} --rdzv_backend=static --master_addr=${MASTER_ADDR} --master_port=${MASTER_PORT}" 
- ${LOGGER:-} ${BINDCMD:-} ${CMD[@]} train.py; ret_code=$?
-
-#train.py 
+ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=8 torchrun \
+ --nproc-per-node="$DGXNGPU" \
+ --nnodes="${NUM_NODES}" \
+ --node_rank="${NODE_RANK}" \
+ --rdzv_id="${JOB_IDENTIFIER}" \
+ --rdzv_backend static \
+ --master_addr="${MASTER_ADDR}" \
+ --master_port="${MASTER_PORT}" \
+ train.py 
 
  echo "RUNANDTIME_STOP $(date +%s)"
  set -e
