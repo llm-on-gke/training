@@ -17,11 +17,11 @@ export CUDNN_FRONTEND_ATTN_DP_WORKSPACE_LIMIT=0
 #export TORCH_NCCL_AVOID_RECORD_STREAMS=1 # Disable caching NCCL communication buffer
 export CUDA_DEVICE_MAX_CONNECTIONS=1
 
-export FP8=True
-export FP8_AMAX_ALGO=max
-export FP8_REDUCE_AMAX=True
-export FP8_AMAX_HISTORY=4
-export FP8_DPA=1
+#export FP8=True
+#export FP8_AMAX_ALGO=max
+#export FP8_REDUCE_AMAX=True
+#export FP8_AMAX_HISTORY=4
+#export FP8_DPA=1
 export NVTE_FP8_DPA_BWD=1
 export HYDRA_FULL_ERROR=1
 export HF_HUB_OFFLINE=1
@@ -32,9 +32,9 @@ export CG_WEIGHT_CACHING=0
 #export NVTE_NORM_FWD_USE_CUDNN=1
 #export NVTE_NORM_BWD_USE_CUDNN=1
 
-#export WARMUP=True
-#export WARMUP_TRAIN_STEPS=5
-#export WARMUP_VALIDATION_STEPS=5
+export WARMUP=True
+export WARMUP_TRAIN_STEPS=5
+export WARMUP_VALIDATION_STEPS=5
 
 # other
 export MBS=1
