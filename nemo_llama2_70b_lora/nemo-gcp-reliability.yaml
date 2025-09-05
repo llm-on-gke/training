@@ -113,7 +113,7 @@ spec:
                 path: /mnt/stateful_partition/kube-ephemeral-ssd
             containers:
             - name: pytorch
-              image: us-east1-docker.pkg.dev/gpu-launchpad-playground/gke-llm/mlperf-nvidia:llama2_70b_lora-pyt #us-central1-docker.pkg.dev/deeplearning-images/reproducibility/pytorch-gpu-nemo-nccl:nemo25.04-gib1.0.6-A3U 
+              image: us-central1-docker.pkg.dev/deeplearning-images/reproducibility/pytorch-gpu-nemo-nccl:nemo25.04-gib1.0.6-A3U #us-east1-docker.pkg.dev/gpu-launchpad-playground/gke-llm/mlperf-nvidia:llama2_70b_lora-pyt #
               imagePullPolicy: Always
               # image: gcr.io/k8s-staging-jobset/pytorch-mnist:latest
               ports:

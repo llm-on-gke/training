@@ -290,7 +290,7 @@ def prepare_training_strategy(
         fp8="hybrid",
         fp8_amax_history_len=cfg.model.fp8_amax_history_len,
         fp8_amax_compute_algo=cfg.model.fp8_amax_compute_algo,
-        fp8_params=cfg.model.fp8_params,
+        #fp8_params=cfg.model.fp8_params,
         fp8_dot_product_attention=cfg.model.fp8_dot_product_attention,
     )
 
