@@ -34,7 +34,9 @@ import torch
 from omegaconf import DictConfig
 from omegaconf.omegaconf import OmegaConf
 
-torch.cuda.set_device(int(os.getenv("NODE_RANK", "0")))
+#torch.cuda.set_device(int(os.getenv("SLURM_LOCALID", "0"))) # think this would also give you the local rank
+torch.cuda.set_device(int(os.getenv("LOCAL_RANK")))
+
 
 import gc
 
@@ -74,7 +76,9 @@ def init_mp_state(cfg, cp):
 
 
 def get_rank():
-    return int(os.getenv("NODE_RANK", 0))
+    #return int(os.getenv("SLURM_PROCID", 0)) #I think this would be equal to the local rank 
+    return int(os.getenv("LOCAL_RANK", 0))
+
 
 
 def prepare_dataset(
@@ -229,50 +233,19 @@ def prepare_model(tokenizer: AutoTokenizer, cfg: DictConfig):
     )
     llama2_config.cp_eval = cfg.model.eval_cp
     model = CustomLlamaModel(llama2_config, tokenizer=tokenizer)
-    resume = None
-    if cfg.load_ckpt:
-        restore_config = RestoreConfig(
-            path=cfg.ckpt_root,
-            adapter_path=None,
-            load_model_state=True,
-            load_optim_state=False,
-            load_artifacts=False,
-        )
-        resume = AutoResume(restore_config=restore_config)
 
-    return peft, model, resume
+    return peft, model
 
 
 def prepare_training_strategy(
     cfg: DictConfig
-) -> tuple[nl.MegatronStrategy, nl.MegatronMixedPrecision]:
-#) -> tuple[nl.MegatronStrategy, nl.MegatronMixedPrecision, MegatronCommOverlapCallback]:
+) -> tuple[nl.MegatronStrategy, nl.MegatronMixedPrecision, MegatronCommOverlapCallback]:
     def validation_step_patch(self, dataloader_iter, *args, **kwargs):
         with self.precision_plugin.val_step_context():
             out = self.model.validation_step(dataloader_iter, *args, **kwargs)
             self.lightning_module.log("val_loss_sum", out[0], reduce_fx="sum")
             self.lightning_module.log("val_loss_count", out[1], reduce_fx="sum")
-            if out is None:
-                # Many NeMo models return (loss, num_items) tuple
-                if isinstance(out, tuple) and len(out) == 2:
-                    loss, num_items = out
-                    # Log the loss (scalar value)
-                    self.lightning_module.log("val_loss", loss, reduce_fx="mean")
-                    # Optionally log num_items if needed
-                    # self.lightning_module.log("val_num_items", num_items, reduce_fx="sum")
-                elif isinstance(out, torch.Tensor):
-                    # Single loss tensor - ensure it's scalar
-                    if out.dim() > 0 and out.numel() > 1:
-                        # If it's a multi-element tensor, take mean
-                        self.lightning_module.log("val_loss", out.mean(), reduce_fx="mean")
-                    else:
-                        # Single element tensor
-                        self.lightning_module.log("val_loss", out, reduce_fx="mean")
-                else:
-                    # Handle other cases or log warning
-                    logging.warning(f"Unexpected validation output format: {type(out)}")
-            
-        return out
+            return out
 
     nl.MegatronStrategy.validation_step = validation_step_patch
 
@@ -305,30 +278,30 @@ def prepare_training_strategy(
         fp8="hybrid",
         fp8_amax_history_len=cfg.model.fp8_amax_history_len,
         fp8_amax_compute_algo=cfg.model.fp8_amax_compute_algo,
-        #fp8_params=cfg.model.fp8_params,
+        fp8_params=cfg.model.fp8_params,
         fp8_dot_product_attention=cfg.model.fp8_dot_product_attention,
     )
-    
-    #error comment out (rick)
+
     tp_comm_overlap_cfg = None
-    if cfg.model.ub_tp_comm_overlap:
-        tp_comm_overlap_cfg = OmegaConf.to_container(cfg.model.ub_tp_comm_overlap_cfg)
-        TPCommOverlapConfig = make_dataclass(
-            "TPCommOverlapConfig",
-           [(k, type(v)) for k, v in tp_comm_overlap_cfg.items()],
-        )
-        tp_comm_overlap_cfg = TPCommOverlapConfig(**tp_comm_overlap_cfg)
+    # if cfg.model.ub_tp_comm_overlap:
+    #     tp_comm_overlap_cfg = OmegaConf.to_container(cfg.model.ub_tp_comm_overlap_cfg)
+    #     TPCommOverlapConfig = make_dataclass(
+    #         "TPCommOverlapConfig",
+    #         [(k, type(v)) for k, v in tp_comm_overlap_cfg.items()],
+    #     )
+    #     tp_comm_overlap_cfg = TPCommOverlapConfig(**tp_comm_overlap_cfg)
 
-    #overlap_callback = MegatronCommOverlapCallback(
-    #    tp_comm_overlap=cfg.model.ub_tp_comm_overlap,
-    #    tp_comm_overlap_cfg=tp_comm_overlap_cfg,
-    #    overlap_grad_reduce=cfg.ddp.overlap_grad_reduce,
-    #    overlap_param_gather=cfg.ddp.overlap_param_gather,
-    #    overlap_param_gather_with_optimizer_step=cfg.optim.overlap_param_gather_with_optimizer_step,
-    #)
+    overlap_callback = MegatronCommOverlapCallback(
+        #tp_comm_overlap=cfg.model.ub_tp_comm_overlap,
+        tp_comm_overlap=False,
+        tp_comm_overlap_cfg=tp_comm_overlap_cfg,
+        overlap_grad_reduce=cfg.ddp.overlap_grad_reduce,
+        overlap_param_gather=cfg.ddp.overlap_param_gather,
+        overlap_param_gather_with_optimizer_step=cfg.optim.overlap_param_gather_with_optimizer_step,
+    )
 
-    #return strategy, precision, overlap_callback
-    return strategy, precision
+    return strategy, precision, overlap_callback
+
 
 OmegaConf.register_new_resolver("add", lambda x, y: x + y)
 OmegaConf.register_new_resolver("floor_div", lambda x, y: x // y)
@@ -362,9 +335,9 @@ def main(cfg: DictConfig) -> None:
         overlap_param_gather_with_optimizer_step=cfg.optim.overlap_param_gather_with_optimizer_step,
     )
 
-    peft, model, resume = prepare_model(tokenizer=tokenizer, cfg=cfg)
-    #strategy, precision, overlap_callback = prepare_training_strategy(cfg)
-    strategy, precision = prepare_training_strategy(cfg)
+    peft, model = prepare_model(tokenizer=tokenizer, cfg=cfg)
+    strategy, precision, overlap_callback = prepare_training_strategy(cfg)
+
     logger = MetricsLogger(cfg, model)
     custom_callback = logger.callback
 
@@ -390,14 +363,27 @@ def main(cfg: DictConfig) -> None:
         enable_progress_bar=False,
         use_distributed_sampler=False,
         log_every_n_steps=0,
-        #callbacks=[overlap_callback],
+        callbacks=[overlap_callback],
         logger=logger,
     )
     logger.set_trainer(trainer)
     logger.log_hyperparams()
     model.custom_callback = custom_callback
 
-    app_state = _setup(
+    resume = None
+    if cfg.load_ckpt:
+        print("LOADING CHECKPOINT--------------------")
+        restore_config = RestoreConfig(
+            path=cfg.ckpt_root,
+            adapter_path=None,
+            load_model_state=True,
+            load_optim_state=False,
+            load_artifacts=False,
+        )
+        resume = AutoResume(restore_config=restore_config)
+
+    # called for its side effects, connects model, optimizer, and data module to traininer. 
+    _ = _setup(
         model=model,
         data=data,
         trainer=trainer,

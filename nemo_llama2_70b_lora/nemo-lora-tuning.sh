@@ -45,6 +45,13 @@ NUM_NODES="$NODE_COUNT"
 unset NVTE_FLASH_ATTN                                                                                                                                                  │
 unset NVTE_FUSED_ATTN                                                                                                                                                  │
 unset NVTE_UNFUSED_ATTN    
+DGXNNODES=2
+TP=4
+CP=1
+PP=1
+MINIBS=1
+MBS=1
+
 # --- Paths ---
 #DATA_DIR="/gcs-dir/hf-data"
 #MODEL_PATH="/gcs-dir/llama-7b"
