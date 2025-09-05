@@ -46,7 +46,8 @@ unset NVTE_FLASH_ATTN                                                           
 unset NVTE_FUSED_ATTN                                                                                                                                                  │
 unset NVTE_UNFUSED_ATTN    
 DGXNNODES=2
-TP=4
+DGXNNODES=2
+TP=1
 CP=1
 PP=1
 MINIBS=1
