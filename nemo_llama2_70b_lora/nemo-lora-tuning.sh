@@ -47,7 +47,7 @@ unset NVTE_FUSED_ATTN                                                           
 unset NVTE_UNFUSED_ATTN    
 DGXNNODES=2
 DGXNNODES=2
-TP=1
+TP=4
 CP=1
 PP=1
 MINIBS=1
@@ -113,8 +113,9 @@ fi
  echo "RUNANDTIME_START $(date +%s)"
 
  declare -a CMD
-
- CMD="PYTORCH_CUDA_ALLOC_CONF='expandable_segments:True' OMP_NUM_THREADS=8 torchrun --nproc-per-node=$DGXNGPU --nnodes=${NUM_NODES} --node_rank=${NODE_RANK} --rdzv_id=${JOB_IDENTIFIER} --rdzv_backend=static --master_addr=${MASTER_ADDR} --master_port=${MASTER_PORT}" 
+ PYTORCH_CUDA_ALLOC_CONF='expandable_segments:True' 
+ OMP_NUM_THREADS=8 
+ CMD="torchrun --nproc-per-node=$DGXNGPU --nnodes=${NUM_NODES} --node_rank=${NODE_RANK} --rdzv_id=${JOB_IDENTIFIER} --rdzv_backend=static --master_addr=${MASTER_ADDR} --master_port=${MASTER_PORT}" 
  ${LOGGER:-} ${BINDCMD:-} ${CMD[@]} train.py; ret_code=$?
 
 #train.py 
