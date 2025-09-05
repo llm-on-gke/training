@@ -1,4 +1,4 @@
-#source $(dirname ${BASH_SOURCE[0]})/config_common.sh
+source $(dirname ${BASH_SOURCE[0]})/config_common.sh
 
 # hyperparameters
 # hyperparameters
