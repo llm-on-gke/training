@@ -1,6 +1,6 @@
+
 source $(dirname ${BASH_SOURCE[0]})/config_common.sh
 
-# hyperparameters
 # hyperparameters
 export MAX_STEPS=896
 export LR=0.0005

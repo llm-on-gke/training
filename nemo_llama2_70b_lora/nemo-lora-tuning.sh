@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DATADIR="/gcs-dir/data/gov_report"  # set your </path/to/dataset>
-MODEL="/gcs-dir/data/model"  # set your </path/to/dataset>
+DATADIR="/gcs-dir/data/gov_report"  # set your </path/to/dataset>, needed to change for my locations because of the double data
+MODEL="/gcs-dir/data/model"  # set your </path/to/dataset>, needed to change for my locations because of the double data
 #LOGDIR="</path/to/output_logdir>"  # set the place where the output logs will be saved
 #export CONT=<docker/registry>/mlperf-nvidia:llama2_70b_lora-pyt
-source /usr/local/gib/scripts/set_nccl_env.sh
 source config_XE9680lx8H200-SXM-141GB_1x8x2xtp1pp1cp2.sh  # select config and source it
+
+# Correct Vars that are inccorrectd in the sourced config file 
+DGXNNODES=2
+TP=4
+CP=1
+PP=1
+MINIBS=1
+MBS=1
+
+# Add in envs from run.sub 
+
+
 # --- GKE-specific environment variables ---
 MASTER_ADDR="train-workers-0-0.train"
 MASTER_PORT=3389
@@ -29,7 +40,7 @@ NUM_NODES="$NODE_COUNT"
 : "${SEED_BASE:=${SEED-$RANDOM}}"
 : "${DATESTAMP:=$(date +'%y%m%d%H%M%S%N')}"
 : "${CLEAR_CACHES:=0}"
-: "${LOGDIR:=./results}"
+: "${LOGDIR:=/gcs-dir/results}" # changed so logs would go in the bucket 
 : "${DROPCACHE_CMD:="sudo /sbin/sysctl vm.drop_caches=3"}"
 : "${POWERLOGDIR:=' '}" # Power traces output dir
 : "${POWERCMDDIR:=' '}" # Path to power monitor
@@ -45,14 +56,6 @@ NUM_NODES="$NODE_COUNT"
 unset NVTE_FLASH_ATTN                                                                                                                                                  │
 unset NVTE_FUSED_ATTN                                                                                                                                                  │
 unset NVTE_UNFUSED_ATTN    
-DGXNNODES=2
-DGXNNODES=2
-TP=4
-CP=1
-PP=1
-MINIBS=1
-MBS=1
-
 # --- Paths ---
 #DATA_DIR="/gcs-dir/hf-data"
 #MODEL_PATH="/gcs-dir/llama-7b"
@@ -102,29 +105,16 @@ if [ "${NVTX_FLAG:-0}" -eq 1 ]; then
     NSYSCMD="nsys profile --sample=cpu --cuda-graph-trace=node --cpuctxsw=none --trace=cuda,nvtx -f true --stats true -o ${NSYS_OUT}"
 fi
 
-: "${LOGGER:=""}"
-if [[ -n "${APILOG_DIR:-}" ]]; then
-    if [ "$node_rank" -eq 0 ] && [ "$local_rank" -eq 0 ]; then
-      LOGGER="apiLog.sh -p /gcs-dir/mlperf_logs/${MODEL_NAME} -v ${FRAMEWORK}/train/${DGXSYSTEM}"
-    fi
-fi
-(
- set +e
- echo "RUNANDTIME_START $(date +%s)"
+PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=8 torchrun \
+--nproc-per-node="$DGXNGPU" \
+--nnodes="${NUM_NODES}" \
+--node_rank="${NODE_RANK}" \
+--rdzv_id="${JOB_IDENTIFIER}" \
+--rdzv_backend static \
+--master_addr="${MASTER_ADDR}" \
+--master_port="${MASTER_PORT}" \
+train.py 
 
- PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=8 torchrun \
- --nproc-per-node="$DGXNGPU" \
- --nnodes="${NUM_NODES}" \
- --node_rank="${NODE_RANK}" \
- --rdzv_id="${JOB_IDENTIFIER}" \
- --rdzv_backend static \
- --master_addr="${MASTER_ADDR}" \
- --master_port="${MASTER_PORT}" \
- train.py 
-
- echo "RUNANDTIME_STOP $(date +%s)"
- set -e
-) |& tee "/gcs-dir/mlperf_logs/runlog_$(date +%s).log"
 #CMD=( ${NSYSCMD} 'torchrun' \
 ##    --nproc_per_node=$DGXNGPU \
 #    --nnodes=$NUM_NODES \
