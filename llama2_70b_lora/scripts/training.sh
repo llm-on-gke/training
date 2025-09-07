@@ -149,13 +149,12 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --master_port=$MASTER_PORT \
     --node_rank=$NODE_RANK \
     scripts/train.py \
-   --deepspeed $DEEPSPEED_CONFIG 
-    scripts/train.py \
     --dataset_path $DATA_DIR \
     --model_path $MODEL_PATH \
     --max_seq_len 8192 \
     --bf16 True \
     --logging_steps 24 \
+    --num_train_epochs 1 \
     --eval_steps 48 \
     --output_dir $OUTPUT_DIR \
     --per_device_train_batch_size $BATCH_SIZE_PER_GPU \
@@ -174,7 +173,9 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --max_steps 1024 \
     --use_flash_attn True \
     --seed 1234 \
-    --lora_target_modules "qkv_proj,o_proj"
+    --lora_target_modules "qkv_proj,o_proj" \
+    --deepspeed $DEEPSPEED_CONFIG
+
 
 echo "Training completed."
 
