@@ -75,7 +75,7 @@ spec:
               csi:
                 driver: gcsfuse.csi.storage.gke.io
                 volumeAttributes:
-                  bucketName: rick-mlperf
+                  bucketName: rick-data-uw1
                   mountOptions: "only-dir=data/gov_report,implicit-dirs"
                   fileCacheCapacity: "-1Mi"
                   fileCacheForRangeRead: "true"
@@ -87,7 +87,7 @@ spec:
               csi:
                 driver: gcsfuse.csi.storage.gke.io
                 volumeAttributes:
-                  bucketName: rick-mlperf
+                  bucketName: rick-data-uw1
                   mountOptions: "only-dir=data/model,implicit-dirs"
                   fileCacheCapacity: "-1Mi"
                   fileCacheForRangeRead: "true"
@@ -100,7 +100,7 @@ spec:
                 driver: gcsfuse.csi.storage.gke.io
                 readOnly: false
                 volumeAttributes:
-                   bucketName: rick-mlperf
+                   bucketName: rick-data-uw1
                    mountOptions: "implicit-dirs"
                    fileCacheCapacity: "-1Mi"
                    fileCacheForRangeRead: "true"
@@ -177,7 +177,7 @@ spec:
                 #echo "Added $LD_LIBRARY_PATH to ldconfig:"
                 ldconfig -p | grep libcuda | sed 's/^/  /'
                 echo ""
-
+                source /usr/local/gib/scripts/set_nccl_env.sh
                 git clone https://github.com/llm-on-gke/training/
                 #sleep infinity
                 cd  training/nemo_llama2_70b_lora

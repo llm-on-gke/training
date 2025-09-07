@@ -139,12 +139,17 @@ echo ""
 # --- Training ---
 echo "Starting training..."
 
-PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORES deepspeed \
-    --hostfile=$HOSTFILE \
-    --no_ssh \
-    --master_addr=$MASTER_ADDR \
-    --master_port=$MASTER_PORT \
-    --node_rank=$NODE_RANK \
+#PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORES deepspeed \
+#    --hostfile=$HOSTFILE \
+#    --no_ssh \
+#    --master_addr=$MASTER_ADDR \
+#    --master_port=$MASTER_PORT \
+#    --node_rank=$NODE_RANK \
+#    scripts/train.py \
+#   --deepspeed $DEEPSPEED_CONFIG 
+#
+python -c "import torch"
+TORCH_DISTRIBUTED_DEBUG=DETAIL OMP_NUM_THREADS=8 accelerate launch --config_file configs/default_config.yaml --gpu_ids all --num_machines=$NODE_COUNT --num_processes=16 --rdzv_backend static --main_process_ip=$MASTER_ADDR --main_process_port=$MASTER_PORT --machine_rank=$NODE_RANK --debug  \
     scripts/train.py \
     --dataset_path $DATA_DIR \
     --model_path $MODEL_PATH \
@@ -169,8 +174,7 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --max_steps 1024 \
     --use_flash_attn True \
     --seed 1234 \
-    --lora_target_modules qkv_proj,o_proj \
-    --deepspeed $DEEPSPEED_CONFIG
+    --lora_target_modules "qkv_proj,o_proj"
 
 echo "Training completed."
 
