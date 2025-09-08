@@ -61,24 +61,23 @@ cat <<EOT >ds_config.json
 "enabled": true
 },
 "optimizer": {
-"type": "Adam",
-"params": {
-"lr": 4e-4,
-"betas": [0.9, 0.999],
-"eps": 1e-8,
-"weight_decay": 0.0001,
-"torch_adam": true,
-"adam_w_mode": true
-}
-},
-
+        "type": "AdamW",
+        "params": {
+            "lr": "auto",
+            "betas": "auto",
+            "eps": "auto",
+            "weight_decay": "auto"
+        }
+    },
 "scheduler": {
-"type": "WarmupCosineLR",
-"params": {
-"total_num_steps": "auto",
-"warmup_min_ratio": 0.03,
-"warmup_num_steps": "auto"
-}
+        "type": "WarmupDecayLR",
+        "params": {
+            "last_batch_iteration": -1,
+            "total_num_steps": "auto",
+            "warmup_min_lr": "auto",
+            "warmup_max_lr": "auto",
+            "warmup_num_steps": "auto"
+        }
 },
 "zero_optimization": {
 "stage": 3,
