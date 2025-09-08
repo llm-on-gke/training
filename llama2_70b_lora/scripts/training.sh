@@ -75,9 +75,9 @@ cat <<EOT >ds_config.json
 "scheduler": {
 "type": "WarmupCosineLR",
 "params": {
-"total_num_steps": 50000,
+"total_num_steps": "auto",
 "warmup_min_ratio": 0.03,
-"warmup_num_steps": 5000
+"warmup_num_steps": "auto"
 }
 },
 "zero_optimization": {
@@ -102,7 +102,7 @@ cat <<EOT >ds_config.json
 },
 "gradient_accumulation_steps": "auto",
 "gradient_clipping": 0.3,
-"steps_per_print": 10,
+"steps_per_print": 1,
 "train_batch_size": "auto",
 "train_micro_batch_size_per_gpu": "auto",
 "wall_clock_breakdown": false,
