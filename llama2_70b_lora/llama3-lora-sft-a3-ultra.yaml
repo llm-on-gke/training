@@ -143,7 +143,7 @@ spec:
                 #cp -f /gcs-dir/scripts/training.sh /workspace/ft-llm/scripts
                 git clone https://github.com/llm-on-gke/training/
                 cd training/llama2_70b_lora
-                pip install -r requirements-1.txt
+                pip install -r requirements.txt
                 echo ""
                 #sleep infinity
                 #TORCH_DISTRIBUTED_DEBUG=DETAIL OMP_NUM_THREADS=2 accelerate launch --config_file configs/default_config.yaml  --gpu_ids all --num_machines=$NODE_COUNT --num_processes=16 --rdzv_backend static --main_process_ip=$MASTER_ADDR --main_process_port=$MASTER_PORT --machine_rank=$NODE_RANK --debug  \
