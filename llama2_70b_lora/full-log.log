@@ -1,489 +1,0 @@
-/sbin/ldconfig.real: /usr/local/nvidia/lib64/libnccl-net.so is not a symbolic link
-
-  	libcudart.so.12 (libc6,x86-64) => /usr/local/cuda/targets/x86_64-linux/lib/libcudart.so.12
-  	libcudart.so (libc6,x86-64) => /usr/local/cuda/targets/x86_64-linux/lib/libcudart.so
-  	libcudadebugger.so.1 (libc6,x86-64) => /usr/local/nvidia/lib64/libcudadebugger.so.1
-  	libcuda_wrapper.so.0 (libc6,x86-64) => /opt/hpcx/clusterkit/lib/libcuda_wrapper.so.0
-  	libcuda_wrapper.so (libc6,x86-64) => /opt/hpcx/clusterkit/lib/libcuda_wrapper.so
-  	libcuda.so.1 (libc6,x86-64) => /usr/local/nvidia/lib64/libcuda.so.1
-  	libcuda.so (libc6,x86-64) => /usr/local/nvidia/lib64/libcuda.so
-Cloning into 'training'...
-Looking in indexes: https://pypi.org/simple, https://pypi.ngc.nvidia.com
-Collecting git+https://github.com/mlcommons/logging.git (from -r requirements.txt (line 1))
-  Cloning https://github.com/mlcommons/logging.git to /tmp/pip-req-build-93z0mxi1
-  Running command git clone --filter=blob:none --quiet https://github.com/mlcommons/logging.git /tmp/pip-req-build-93z0mxi1
-  Resolved https://github.com/mlcommons/logging.git to commit 497b7c19a9277559ac278e641951243d4b42cc38
-  Preparing metadata (setup.py): started
-  Preparing metadata (setup.py): finished with status 'done'
-Requirement already satisfied: transformers==4.46.3 in /usr/local/lib/python3.10/dist-packages (from -r requirements.txt (line 2)) (4.46.3)
-Requirement already satisfied: accelerate==1.0.1 in /usr/local/lib/python3.10/dist-packages (from -r requirements.txt (line 3)) (1.0.1)
-Requirement already satisfied: peft==0.8.2 in /usr/local/lib/python3.10/dist-packages (from -r requirements.txt (line 4)) (0.8.2)
-Requirement already satisfied: datasets==2.17.1 in /usr/local/lib/python3.10/dist-packages (from -r requirements.txt (line 5)) (2.17.1)
-Requirement already satisfied: deepspeed==0.15.4 in /usr/local/lib/python3.10/dist-packages (from -r requirements.txt (line 6)) (0.15.4)
-Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (3.13.3)
-Requirement already satisfied: huggingface-hub<1.0,>=0.23.2 in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (0.34.4)
-Requirement already satisfied: numpy>=1.17 in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (1.24.4)
-Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (23.2)
-Requirement already satisfied: pyyaml>=5.1 in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (6.0.1)
-Requirement already satisfied: regex!=2019.12.17 in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (2023.12.25)
-Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (2.31.0)
-Requirement already satisfied: tokenizers<0.21,>=0.20 in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (0.20.3)
-Requirement already satisfied: safetensors>=0.4.1 in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (0.6.2)
-Requirement already satisfied: tqdm>=4.27 in /usr/local/lib/python3.10/dist-packages (from transformers==4.46.3->-r requirements.txt (line 2)) (4.66.2)
-Requirement already satisfied: psutil in /usr/local/lib/python3.10/dist-packages (from accelerate==1.0.1->-r requirements.txt (line 3)) (5.9.4)
-Requirement already satisfied: torch>=1.10.0 in /usr/local/lib/python3.10/dist-packages (from accelerate==1.0.1->-r requirements.txt (line 3)) (2.3.0a0+6ddf5cf85e.nv24.4)
-Requirement already satisfied: pyarrow>=12.0.0 in /usr/local/lib/python3.10/dist-packages (from datasets==2.17.1->-r requirements.txt (line 5)) (14.0.1)
-Requirement already satisfied: pyarrow-hotfix in /usr/local/lib/python3.10/dist-packages (from datasets==2.17.1->-r requirements.txt (line 5)) (0.7)
-Requirement already satisfied: dill<0.3.9,>=0.3.0 in /usr/local/lib/python3.10/dist-packages (from datasets==2.17.1->-r requirements.txt (line 5)) (0.3.8)
-Requirement already satisfied: pandas in /usr/local/lib/python3.10/dist-packages (from datasets==2.17.1->-r requirements.txt (line 5)) (1.5.3)
-Requirement already satisfied: xxhash in /usr/local/lib/python3.10/dist-packages (from datasets==2.17.1->-r requirements.txt (line 5)) (3.5.0)
-Requirement already satisfied: multiprocess in /usr/local/lib/python3.10/dist-packages (from datasets==2.17.1->-r requirements.txt (line 5)) (0.70.16)
-Requirement already satisfied: fsspec<=2023.10.0,>=2023.1.0 in /usr/local/lib/python3.10/dist-packages (from fsspec[http]<=2023.10.0,>=2023.1.0->datasets==2.17.1->-r requirements.txt (line 5)) (2023.10.0)
-Requirement already satisfied: aiohttp in /usr/local/lib/python3.10/dist-packages (from datasets==2.17.1->-r requirements.txt (line 5)) (3.9.3)
-Requirement already satisfied: hjson in /usr/local/lib/python3.10/dist-packages (from deepspeed==0.15.4->-r requirements.txt (line 6)) (3.1.0)
-Requirement already satisfied: msgpack in /usr/local/lib/python3.10/dist-packages (from deepspeed==0.15.4->-r requirements.txt (line 6)) (1.0.8)
-Requirement already satisfied: ninja in /usr/local/lib/python3.10/dist-packages (from deepspeed==0.15.4->-r requirements.txt (line 6)) (1.11.1.1)
-Requirement already satisfied: py-cpuinfo in /usr/local/lib/python3.10/dist-packages (from deepspeed==0.15.4->-r requirements.txt (line 6)) (9.0.0)
-Requirement already satisfied: pydantic>=2.0.0 in /usr/local/lib/python3.10/dist-packages (from deepspeed==0.15.4->-r requirements.txt (line 6)) (2.6.4)
-Requirement already satisfied: scipy>=1.4.1 in /usr/local/lib/python3.10/dist-packages (from mlperf-logging==4.1.28->-r requirements.txt (line 1)) (1.12.0)
-Requirement already satisfied: aiosignal>=1.1.2 in /usr/local/lib/python3.10/dist-packages (from aiohttp->datasets==2.17.1->-r requirements.txt (line 5)) (1.3.1)
-Requirement already satisfied: attrs>=17.3.0 in /usr/local/lib/python3.10/dist-packages (from aiohttp->datasets==2.17.1->-r requirements.txt (line 5)) (23.2.0)
-Requirement already satisfied: frozenlist>=1.1.1 in /usr/local/lib/python3.10/dist-packages (from aiohttp->datasets==2.17.1->-r requirements.txt (line 5)) (1.4.1)
-Requirement already satisfied: multidict<7.0,>=4.5 in /usr/local/lib/python3.10/dist-packages (from aiohttp->datasets==2.17.1->-r requirements.txt (line 5)) (6.0.5)
-Requirement already satisfied: yarl<2.0,>=1.0 in /usr/local/lib/python3.10/dist-packages (from aiohttp->datasets==2.17.1->-r requirements.txt (line 5)) (1.9.4)
-Requirement already satisfied: async-timeout<5.0,>=4.0 in /usr/local/lib/python3.10/dist-packages (from aiohttp->datasets==2.17.1->-r requirements.txt (line 5)) (4.0.3)
-Requirement already satisfied: typing-extensions>=3.7.4.3 in /usr/local/lib/python3.10/dist-packages (from huggingface-hub<1.0,>=0.23.2->transformers==4.46.3->-r requirements.txt (line 2)) (4.10.0)
-Requirement already satisfied: hf-xet<2.0.0,>=1.1.3 in /usr/local/lib/python3.10/dist-packages (from huggingface-hub<1.0,>=0.23.2->transformers==4.46.3->-r requirements.txt (line 2)) (1.1.9)
-Requirement already satisfied: python-dateutil>=2.8.1 in /usr/local/lib/python3.10/dist-packages (from pandas->datasets==2.17.1->-r requirements.txt (line 5)) (2.9.0.post0)
-Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.10/dist-packages (from pandas->datasets==2.17.1->-r requirements.txt (line 5)) (2024.1)
-Requirement already satisfied: annotated-types>=0.4.0 in /usr/local/lib/python3.10/dist-packages (from pydantic>=2.0.0->deepspeed==0.15.4->-r requirements.txt (line 6)) (0.6.0)
-Requirement already satisfied: pydantic-core==2.16.3 in /usr/local/lib/python3.10/dist-packages (from pydantic>=2.0.0->deepspeed==0.15.4->-r requirements.txt (line 6)) (2.16.3)
-Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.10/dist-packages (from requests->transformers==4.46.3->-r requirements.txt (line 2)) (3.3.2)
-Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/dist-packages (from requests->transformers==4.46.3->-r requirements.txt (line 2)) (3.6)
-Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests->transformers==4.46.3->-r requirements.txt (line 2)) (1.26.18)
-Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests->transformers==4.46.3->-r requirements.txt (line 2)) (2024.2.2)
-Requirement already satisfied: sympy in /usr/local/lib/python3.10/dist-packages (from torch>=1.10.0->accelerate==1.0.1->-r requirements.txt (line 3)) (1.12)
-Requirement already satisfied: networkx in /usr/local/lib/python3.10/dist-packages (from torch>=1.10.0->accelerate==1.0.1->-r requirements.txt (line 3)) (2.6.3)
-Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/dist-packages (from torch>=1.10.0->accelerate==1.0.1->-r requirements.txt (line 3)) (3.1.3)
-Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil>=2.8.1->pandas->datasets==2.17.1->-r requirements.txt (line 5)) (1.16.0)
-Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.10/dist-packages (from jinja2->torch>=1.10.0->accelerate==1.0.1->-r requirements.txt (line 3)) (2.1.5)
-Requirement already satisfied: mpmath>=0.19 in /usr/local/lib/python3.10/dist-packages (from sympy->torch>=1.10.0->accelerate==1.0.1->-r requirements.txt (line 3)) (1.3.0)
-WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
-
-[notice] A new release of pip is available: 24.0 -> 25.2
-[notice] To update, run: python -m pip install --upgrade pip
-
-Running on node rank 0 of 2 nodes with 8 GPUs.
-#!/bin/bash
-export NCCL_NET=gIB
-export NCCL_CROSS_NIC=0
-export NCCL_NET_GDR_LEVEL=PIX
-export NCCL_P2P_NET_CHUNKSIZE=131072
-export NCCL_NVLS_CHUNKSIZE=524288
-export NCCL_IB_ADAPTIVE_ROUTING=1
-export NCCL_IB_QPS_PER_CONNECTION=4
-export NCCL_IB_TC=52
-export NCCL_IB_FIFO_TC=84
-
-# Use A3 Ultra config as fallback option
-export NCCL_TUNER_CONFIG_PATH=/usr/local/gib/configs/tuner_config_a3u.txtpb
-
-# Check if PCIe device exist
-check_pcie_device() {
-  local vendor_id="$1"
-  local device_id="$2"
-
-  for device_path in /sys/bus/pci/devices/*; do
-    if [[ -d "$device_path" ]]; then
-      current_vendor_id=$(cat "$device_path/vendor" 2>/dev/null)
-      current_device_id=$(cat "$device_path/device" 2>/dev/null)
-      if [[ "${current_vendor_id#0x}" == "$vendor_id" ]] && \
-        [[ "${current_device_id#0x}" == "$device_id" ]]; then
-        return 0
-      fi
-    fi
-  done
-
-  return 1
-}
-
-# NVIDIA B200
-if check_pcie_device 10de 2901; then
-    export NCCL_TUNER_CONFIG_PATH="/usr/local/gib/configs/tuner_config_a4.txtpb"
-    # echo "Found NVIDIA B200. Setting NCCL_TUNER_CONFIG_PATH to: $NCCL_TUNER_CONFIG_PATH"
-# NVIDIA H200
-elif check_pcie_device 10de 2335; then
-    export NCCL_TUNER_CONFIG_PATH="/usr/local/gib/configs/tuner_config_a3u.txtpb"
-    # echo "Found NVIDIA H200. Setting NCCL_TUNER_CONFIG_PATH to: $NCCL_TUNER_CONFIG_PATH"
-fi
-
-Environment variables set:
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-2_INFO={"0000:98:00.0":{"generic":{"deviceID":"0000:98:00.0"},"rdma":{"rdma_cm":"/dev/infiniband/rdma_cm","uverbs":"/dev/infiniband/uverbs2"}}}
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_GVNIC-1=0000:c0:14.0
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-6_INFO={"0000:cd:00.0":{"generic":{"deviceID":"0000:cd:00.0"},"rdma":{"rdma_cm":"/dev/infiniband/rdma_cm","uverbs":"/dev/infiniband/uverbs6"}}}
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_GVNIC-1_INFO={"0000:c0:14.0":{"generic":{"deviceID":"0000:c0:14.0"}}}
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-3_INFO={"0000:99:00.0":{"generic":{"deviceID":"0000:99:00.0"},"rdma":{"rdma_cm":"/dev/infiniband/rdma_cm","uverbs":"/dev/infiniband/uverbs3"}}}
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-7_INFO={"0000:ce:00.0":{"generic":{"deviceID":"0000:ce:00.0"},"rdma":{"rdma_cm":"/dev/infiniband/rdma_cm","uverbs":"/dev/infiniband/uverbs7"}}}
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-4_INFO={"0000:c6:00.0":{"generic":{"deviceID":"0000:c6:00.0"},"rdma":{"rdma_cm":"/dev/infiniband/rdma_cm","uverbs":"/dev/infiniband/uverbs4"}}}
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-1_INFO={"0000:92:00.0":{"generic":{"deviceID":"0000:92:00.0"},"rdma":{"rdma_cm":"/dev/infiniband/rdma_cm","uverbs":"/dev/infiniband/uverbs1"}}}
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-5_INFO={"0000:c7:00.0":{"generic":{"deviceID":"0000:c7:00.0"},"rdma":{"rdma_cm":"/dev/infiniband/rdma_cm","uverbs":"/dev/infiniband/uverbs5"}}}
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-5=0000:c7:00.0
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-4=0000:c6:00.0
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-7=0000:ce:00.0
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-6=0000:cd:00.0
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-1=0000:92:00.0
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-0_INFO={"0000:91:00.0":{"generic":{"deviceID":"0000:91:00.0"},"rdma":{"rdma_cm":"/dev/infiniband/rdma_cm","uverbs":"/dev/infiniband/uverbs0"}}}
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-0=0000:91:00.0
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-3=0000:99:00.0
-PCIDEVICE_NETWORKING_GKE_IO_NETWORKS_RDMA-2=0000:98:00.0
-NPP_VERSION=12.2.5.30
-SHELL=/bin/bash
-NVIDIA_VISIBLE_DEVICES=all
-KUBERNETES_SERVICE_PORT_HTTPS=443
-NCCL_IB_TC=52
-NODE_COUNT=2
-DALI_BUILD=13435171
-KUBERNETES_SERVICE_PORT=443
-PYTHONUNBUFFERED=0
-CUSOLVER_VERSION=11.6.1.9
-CUBLAS_VERSION=12.4.5.8
-HOSTNAME=train-workers-0-0
-NCCL_IB_FIFO_TC=84
-MASTER_PORT=3389
-NVIDIA_REQUIRE_CUDA=cuda>=9.0
-CUFFT_VERSION=11.2.1.3
-NCCL_NVLS_CHUNKSIZE=524288
-CUDA_CACHE_DISABLE=1
-TENSORBOARD_PORT=6006
-TORCH_DISTRIBUTED_BACKEND=nccl
-_CUDA_COMPAT_STATUS=System has unsupported display driver / cuda driver combination (CUDA_ERROR_SYSTEM_DRIVER_MISMATCH) cuInit()=803
-TORCH_CUDA_ARCH_LIST=5.2 6.0 6.1 7.0 7.2 7.5 8.0 8.6 8.7 9.0+PTX
-NCCL_VERSION=2.21.5
-hostname_prefix=train
-NCCL_NET_GDR_LEVEL=PIX
-CUSPARSE_VERSION=12.3.1.170
-ENV=/etc/shinit_v2
-PWD=/workspace/ft-llm/training/llama2_70b_lora
-JOB_COMPLETION_INDEX=0
-OPENUCX_VERSION=1.16.0
-NSIGHT_SYSTEMS_VERSION=2024.2.1.106
-NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
-POLYGRAPHY_VERSION=0.49.8
-NCCL_NET=gIB
-UCC_CL_BASIC_TLS=^sharp
-TRT_VERSION=8.6.3.1+cuda12.2.2.009
-NVIDIA_PRODUCT_NAME=PyTorch
-RDMACORE_VERSION=39.0
-HOME=/root
-KUBERNETES_PORT_443_TCP=tcp://10.0.32.1:443
-NCCL_WORK_FIFO_DEPTH=4194304
-COCOAPI_VERSION=2.0+nv0.8.0
-CUDA_VERSION=12.4.1.003
-PYTORCH_VERSION=2.3.0a0+6ddf5cf
-CURAND_VERSION=10.3.5.147
-PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
-PYTORCH_BUILD_NUMBER=0
-USE_EXPERIMENTAL_CUDNN_V8_API=1
-CUTENSOR_VERSION=2.0.1.2
-PIP_DEFAULT_TIMEOUT=100
-NVFUSER_BUILD_VERSION=a684e2a
-HPCX_VERSION=2.18
-NVM_DIR=/usr/local/nvm
-TORCH_CUDNN_V8_API_ENABLED=1
-NCCL_P2P_NET_CHUNKSIZE=131072
-MASTER_ADDR=train-workers-0-0.train
-NCCL_IB_QPS_PER_CONNECTION=4
-GDRCOPY_VERSION=2.3.1-1
-NVFUSER_VERSION=a684e2a
-OPENMPI_VERSION=4.1.7
-hostname_suffix=workers
-NVJPEG_VERSION=12.3.1.117
-LIBRARY_PATH=/usr/local/cuda/lib64/stubs:
-PYTHONIOENCODING=utf-8
-SHLVL=0
-NODE_RANK=0
-BASH_ENV=/etc/bash.bashrc
-KUBERNETES_PORT_443_TCP_PROTO=tcp
-CUDNN_VERSION=9.1.0.70
-STAGE_DIR=/tmp
-NSIGHT_COMPUTE_VERSION=2024.1.1.4
-KUBERNETES_PORT_443_TCP_ADDR=10.0.32.1
-DALI_VERSION=1.36.0
-JUPYTER_PORT=8888
-PYTORCH_HOME=/opt/pytorch/pytorch
-LD_LIBRARY_PATH=/usr/local/nvidia/lib64
-NVIDIA_BUILD_ID=88113656
-OMPI_MCA_coll_hcoll_enable=0
-OPAL_PREFIX=/opt/hpcx/ompi
-KUBERNETES_SERVICE_HOST=10.0.32.1
-CUDA_DRIVER_VERSION=550.54.15
-TRANSFORMER_ENGINE_VERSION=1.5
-LC_ALL=C.UTF-8
-KUBERNETES_PORT=tcp://10.0.32.1:443
-KUBERNETES_PORT_443_TCP_PORT=443
-PYTORCH_BUILD_VERSION=2.3.0a0+6ddf5cf
-_CUDA_COMPAT_PATH=/usr/local/cuda/compat
-CUDA_HOME=/usr/local/cuda
-CUDA_MODULE_LOADING=LAZY
-NVIDIA_REQUIRE_JETPACK_HOST_MOUNTS=
-PATH=/usr/local/lib/python3.10/dist-packages/torch_tensorrt/bin:/usr/local/mpi/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/ucx/bin:/opt/tensorrt/bin
-MOFED_VERSION=5.4-rdmacore39.0
-NVIDIA_PYTORCH_VERSION=24.04
-TRTOSS_VERSION=23.11
-NCCL_TUNER_CONFIG_PATH=/usr/local/gib/configs/tuner_config_a3u.txtpb
-TORCH_ALLOW_TF32_CUBLAS_OVERRIDE=1
-NCCL_IB_ADAPTIVE_ROUTING=1
-NCCL_CROSS_NIC=0
-OLDPWD=/workspace/ft-llm
-_=/usr/bin/env
-
-DeepSpeed environment variables:
-export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
-#export NCCL_DEBUG="INFO"
-export NCCL_IB_TC=52
-export NCCL_IB_FIFO_TC=84
-export NCCL_NVLS_CHUNKSIZE=524288
-export NCCL_VERSION=2.21.5
-export NCCL_NET_GDR_LEVEL=PIX
-export NCCL_NET=gIB
-export NCCL_WORK_FIFO_DEPTH=4194304
-export NCCL_P2P_NET_CHUNKSIZE=131072
-export NCCL_IB_QPS_PER_CONNECTION=4
-export NCCL_TUNER_CONFIG_PATH=/usr/local/gib/configs/tuner_config_a3u.txtpb
-export NCCL_IB_ADAPTIVE_ROUTING=1
-export NCCL_CROSS_NIC=0
-
-Deepspeed hostfile:
-# This file is automatically generated by the training script.
-# It contains the list of nodes and their ranks.
-# Format: <node_name> slots=<num_slots>
-train-workers-0-0.train slots=8
-train-workers-0-1.train slots=8
-
-Starting training...
-[2025-09-10 04:01:52,710] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-df: /root/.triton/autotune: No such file or directory
-[2025-09-10 04:01:54,596] [INFO] [runner.py:607:main] cmd = /usr/bin/python -u -m deepspeed.launcher.launch --world_info=eyJ0cmFpbi13b3JrZXJzLTAtMC50cmFpbiI6IFswLCAxLCAyLCAzLCA0LCA1LCA2LCA3XSwgInRyYWluLXdvcmtlcnMtMC0xLnRyYWluIjogWzAsIDEsIDIsIDMsIDQsIDUsIDYsIDddfQ== --master_addr=train-workers-0-0.train --master_port=3389 --node_rank=0 --enable_each_rank_log=None scripts/train.py --dataset_path /gcs-dir/hf-data --model_path /gcs-dir/meta-llama--Llama-2-70B-hf --max_seq_len 8192 --bf16 True --logging_steps 10 --num_train_epochs 1 --eval_steps 200 --output_dir ./results/llama-70b_scrolls_gov_report_r16_ --per_device_train_batch_size 2 --gradient_accumulation_steps 4 --lr_scheduler_type cosine --learning_rate 2e-4 --weight_decay 0.01 --warmup_ratio 0 --max_grad_norm 0.3 --use_gradient_checkpointing True --target_eval_loss 0.925 --use_peft_lora True --lora_r 16 --lora_alpha 32 --lora_dropout 0.1 --max_steps 1024 --use_flash_attn True --seed 1234 --lora_target_modules qkv_proj,o_proj --deepspeed ds_config.json
-[2025-09-10 04:01:55,830] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_IB_TC=52
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_IB_FIFO_TC=84
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_NVLS_CHUNKSIZE=524288
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_VERSION=2.21.5
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_NET_GDR_LEVEL=PIX
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_NET=gIB
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_WORK_FIFO_DEPTH=4194304
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_P2P_NET_CHUNKSIZE=131072
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_IB_QPS_PER_CONNECTION=4
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_TUNER_CONFIG_PATH=/usr/local/gib/configs/tuner_config_a3u.txtpb
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_IB_ADAPTIVE_ROUTING=1
-[2025-09-10 04:01:57,648] [INFO] [launch.py:139:main] 0 NCCL_CROSS_NIC=0
-[2025-09-10 04:01:57,648] [INFO] [launch.py:146:main] WORLD INFO DICT: {'train-workers-0-0.train': [0, 1, 2, 3, 4, 5, 6, 7], 'train-workers-0-1.train': [0, 1, 2, 3, 4, 5, 6, 7]}
-[2025-09-10 04:01:57,648] [INFO] [launch.py:152:main] nnodes=2, num_local_procs=8, node_rank=0
-[2025-09-10 04:01:57,648] [INFO] [launch.py:163:main] global_rank_mapping=defaultdict(<class 'list'>, {'train-workers-0-0.train': [0, 1, 2, 3, 4, 5, 6, 7], 'train-workers-0-1.train': [8, 9, 10, 11, 12, 13, 14, 15]})
-[2025-09-10 04:01:57,648] [INFO] [launch.py:164:main] dist_world_size=16
-[2025-09-10 04:01:57,648] [INFO] [launch.py:168:main] Setting CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
-[2025-09-10 04:01:57,649] [INFO] [launch.py:256:main] process 1825 spawned with command: ['/usr/bin/python', '-u', 'scripts/train.py', '--local_rank=0', '--dataset_path', '/gcs-dir/hf-data', '--model_path', '/gcs-dir/meta-llama--Llama-2-70B-hf', '--max_seq_len', '8192', '--bf16', 'True', '--logging_steps', '10', '--num_train_epochs', '1', '--eval_steps', '200', '--output_dir', './results/llama-70b_scrolls_gov_report_r16_', '--per_device_train_batch_size', '2', '--gradient_accumulation_steps', '4', '--lr_scheduler_type', 'cosine', '--learning_rate', '2e-4', '--weight_decay', '0.01', '--warmup_ratio', '0', '--max_grad_norm', '0.3', '--use_gradient_checkpointing', 'True', '--target_eval_loss', '0.925', '--use_peft_lora', 'True', '--lora_r', '16', '--lora_alpha', '32', '--lora_dropout', '0.1', '--max_steps', '1024', '--use_flash_attn', 'True', '--seed', '1234', '--lora_target_modules', 'qkv_proj,o_proj', '--deepspeed', 'ds_config.json']
-[2025-09-10 04:01:57,650] [INFO] [launch.py:256:main] process 1826 spawned with command: ['/usr/bin/python', '-u', 'scripts/train.py', '--local_rank=1', '--dataset_path', '/gcs-dir/hf-data', '--model_path', '/gcs-dir/meta-llama--Llama-2-70B-hf', '--max_seq_len', '8192', '--bf16', 'True', '--logging_steps', '10', '--num_train_epochs', '1', '--eval_steps', '200', '--output_dir', './results/llama-70b_scrolls_gov_report_r16_', '--per_device_train_batch_size', '2', '--gradient_accumulation_steps', '4', '--lr_scheduler_type', 'cosine', '--learning_rate', '2e-4', '--weight_decay', '0.01', '--warmup_ratio', '0', '--max_grad_norm', '0.3', '--use_gradient_checkpointing', 'True', '--target_eval_loss', '0.925', '--use_peft_lora', 'True', '--lora_r', '16', '--lora_alpha', '32', '--lora_dropout', '0.1', '--max_steps', '1024', '--use_flash_attn', 'True', '--seed', '1234', '--lora_target_modules', 'qkv_proj,o_proj', '--deepspeed', 'ds_config.json']
-[2025-09-10 04:01:57,651] [INFO] [launch.py:256:main] process 1827 spawned with command: ['/usr/bin/python', '-u', 'scripts/train.py', '--local_rank=2', '--dataset_path', '/gcs-dir/hf-data', '--model_path', '/gcs-dir/meta-llama--Llama-2-70B-hf', '--max_seq_len', '8192', '--bf16', 'True', '--logging_steps', '10', '--num_train_epochs', '1', '--eval_steps', '200', '--output_dir', './results/llama-70b_scrolls_gov_report_r16_', '--per_device_train_batch_size', '2', '--gradient_accumulation_steps', '4', '--lr_scheduler_type', 'cosine', '--learning_rate', '2e-4', '--weight_decay', '0.01', '--warmup_ratio', '0', '--max_grad_norm', '0.3', '--use_gradient_checkpointing', 'True', '--target_eval_loss', '0.925', '--use_peft_lora', 'True', '--lora_r', '16', '--lora_alpha', '32', '--lora_dropout', '0.1', '--max_steps', '1024', '--use_flash_attn', 'True', '--seed', '1234', '--lora_target_modules', 'qkv_proj,o_proj', '--deepspeed', 'ds_config.json']
-[2025-09-10 04:01:57,651] [INFO] [launch.py:256:main] process 1828 spawned with command: ['/usr/bin/python', '-u', 'scripts/train.py', '--local_rank=3', '--dataset_path', '/gcs-dir/hf-data', '--model_path', '/gcs-dir/meta-llama--Llama-2-70B-hf', '--max_seq_len', '8192', '--bf16', 'True', '--logging_steps', '10', '--num_train_epochs', '1', '--eval_steps', '200', '--output_dir', './results/llama-70b_scrolls_gov_report_r16_', '--per_device_train_batch_size', '2', '--gradient_accumulation_steps', '4', '--lr_scheduler_type', 'cosine', '--learning_rate', '2e-4', '--weight_decay', '0.01', '--warmup_ratio', '0', '--max_grad_norm', '0.3', '--use_gradient_checkpointing', 'True', '--target_eval_loss', '0.925', '--use_peft_lora', 'True', '--lora_r', '16', '--lora_alpha', '32', '--lora_dropout', '0.1', '--max_steps', '1024', '--use_flash_attn', 'True', '--seed', '1234', '--lora_target_modules', 'qkv_proj,o_proj', '--deepspeed', 'ds_config.json']
-[2025-09-10 04:01:57,652] [INFO] [launch.py:256:main] process 1829 spawned with command: ['/usr/bin/python', '-u', 'scripts/train.py', '--local_rank=4', '--dataset_path', '/gcs-dir/hf-data', '--model_path', '/gcs-dir/meta-llama--Llama-2-70B-hf', '--max_seq_len', '8192', '--bf16', 'True', '--logging_steps', '10', '--num_train_epochs', '1', '--eval_steps', '200', '--output_dir', './results/llama-70b_scrolls_gov_report_r16_', '--per_device_train_batch_size', '2', '--gradient_accumulation_steps', '4', '--lr_scheduler_type', 'cosine', '--learning_rate', '2e-4', '--weight_decay', '0.01', '--warmup_ratio', '0', '--max_grad_norm', '0.3', '--use_gradient_checkpointing', 'True', '--target_eval_loss', '0.925', '--use_peft_lora', 'True', '--lora_r', '16', '--lora_alpha', '32', '--lora_dropout', '0.1', '--max_steps', '1024', '--use_flash_attn', 'True', '--seed', '1234', '--lora_target_modules', 'qkv_proj,o_proj', '--deepspeed', 'ds_config.json']
-[2025-09-10 04:01:57,653] [INFO] [launch.py:256:main] process 1830 spawned with command: ['/usr/bin/python', '-u', 'scripts/train.py', '--local_rank=5', '--dataset_path', '/gcs-dir/hf-data', '--model_path', '/gcs-dir/meta-llama--Llama-2-70B-hf', '--max_seq_len', '8192', '--bf16', 'True', '--logging_steps', '10', '--num_train_epochs', '1', '--eval_steps', '200', '--output_dir', './results/llama-70b_scrolls_gov_report_r16_', '--per_device_train_batch_size', '2', '--gradient_accumulation_steps', '4', '--lr_scheduler_type', 'cosine', '--learning_rate', '2e-4', '--weight_decay', '0.01', '--warmup_ratio', '0', '--max_grad_norm', '0.3', '--use_gradient_checkpointing', 'True', '--target_eval_loss', '0.925', '--use_peft_lora', 'True', '--lora_r', '16', '--lora_alpha', '32', '--lora_dropout', '0.1', '--max_steps', '1024', '--use_flash_attn', 'True', '--seed', '1234', '--lora_target_modules', 'qkv_proj,o_proj', '--deepspeed', 'ds_config.json']
-[2025-09-10 04:01:57,653] [INFO] [launch.py:256:main] process 1831 spawned with command: ['/usr/bin/python', '-u', 'scripts/train.py', '--local_rank=6', '--dataset_path', '/gcs-dir/hf-data', '--model_path', '/gcs-dir/meta-llama--Llama-2-70B-hf', '--max_seq_len', '8192', '--bf16', 'True', '--logging_steps', '10', '--num_train_epochs', '1', '--eval_steps', '200', '--output_dir', './results/llama-70b_scrolls_gov_report_r16_', '--per_device_train_batch_size', '2', '--gradient_accumulation_steps', '4', '--lr_scheduler_type', 'cosine', '--learning_rate', '2e-4', '--weight_decay', '0.01', '--warmup_ratio', '0', '--max_grad_norm', '0.3', '--use_gradient_checkpointing', 'True', '--target_eval_loss', '0.925', '--use_peft_lora', 'True', '--lora_r', '16', '--lora_alpha', '32', '--lora_dropout', '0.1', '--max_steps', '1024', '--use_flash_attn', 'True', '--seed', '1234', '--lora_target_modules', 'qkv_proj,o_proj', '--deepspeed', 'ds_config.json']
-[2025-09-10 04:01:57,654] [INFO] [launch.py:256:main] process 1832 spawned with command: ['/usr/bin/python', '-u', 'scripts/train.py', '--local_rank=7', '--dataset_path', '/gcs-dir/hf-data', '--model_path', '/gcs-dir/meta-llama--Llama-2-70B-hf', '--max_seq_len', '8192', '--bf16', 'True', '--logging_steps', '10', '--num_train_epochs', '1', '--eval_steps', '200', '--output_dir', './results/llama-70b_scrolls_gov_report_r16_', '--per_device_train_batch_size', '2', '--gradient_accumulation_steps', '4', '--lr_scheduler_type', 'cosine', '--learning_rate', '2e-4', '--weight_decay', '0.01', '--warmup_ratio', '0', '--max_grad_norm', '0.3', '--use_gradient_checkpointing', 'True', '--target_eval_loss', '0.925', '--use_peft_lora', 'True', '--lora_r', '16', '--lora_alpha', '32', '--lora_dropout', '0.1', '--max_steps', '1024', '--use_flash_attn', 'True', '--seed', '1234', '--lora_target_modules', 'qkv_proj,o_proj', '--deepspeed', 'ds_config.json']
-[2025-09-10 04:02:02,483] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2025-09-10 04:02:02,619] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2025-09-10 04:02:02,697] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2025-09-10 04:02:02,796] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2025-09-10 04:02:02,816] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2025-09-10 04:02:02,857] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2025-09-10 04:02:02,875] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2025-09-10 04:02:02,911] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2025-09-10 04:02:03,154] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-09-10 04:02:03,277] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-09-10 04:02:03,346] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-09-10 04:02:03,520] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-09-10 04:02:03,520] [INFO] [comm.py:683:init_distributed] Initializing TorchBackend in DeepSpeed with backend nccl
-[2025-09-10 04:02:03,550] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-09-10 04:02:03,558] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-09-10 04:02:03,576] [INFO] [comm.py:652:init_distributed] cdb=None
-[2025-09-10 04:02:03,584] [INFO] [comm.py:652:init_distributed] cdb=None
-[W CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
-[W CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
-[W CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
-[W CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
-[W CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
-[W CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
-[W CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
-[W CUDAAllocatorConfig.h:28] Warning: expandable_segments not supported on this platform (function operator())
-[2025-09-10 04:02:06,889] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 16
-[2025-09-10 04:02:06,889] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 16
-[2025-09-10 04:02:06,889] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 16
-[2025-09-10 04:02:06,889] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 16
-[2025-09-10 04:02:06,890] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 16
-[2025-09-10 04:02:06,890] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 16
-[2025-09-10 04:02:06,890] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 16
-[2025-09-10 04:02:06,890] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 16
-You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
-You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
-You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
-You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
-You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
-You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
-You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
-You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
-[2025-09-10 04:02:09,463] [INFO] [partition_parameters.py:348:__exit__] finished initializing model - num_params = 723, num_elems = 68.98B
-Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]Loading checkpoint shards:   7%|▋         | 1/15 [00:07<01:38,  7.00s/it]Loading checkpoint shards:   7%|▋         | 1/15 [00:06<01:37,  6.97s/it]Loading checkpoint shards:   7%|▋         | 1/15 [00:06<01:37,  6.96s/it]Loading checkpoint shards:   7%|▋         | 1/15 [00:06<01:37,  6.97s/it]Loading checkpoint shards:   7%|▋         | 1/15 [00:07<01:38,  7.00s/it]Loading checkpoint shards:   7%|▋         | 1/15 [00:06<01:37,  7.00s/it]Loading checkpoint shards:   7%|▋         | 1/15 [00:07<01:38,  7.03s/it]Loading checkpoint shards:   7%|▋         | 1/15 [00:11<02:35, 11.13s/it]Loading checkpoint shards:  13%|█▎        | 2/15 [00:14<01:35,  7.36s/it]Loading checkpoint shards:  13%|█▎        | 2/15 [00:14<01:35,  7.36s/it]Loading checkpoint shards:  13%|█▎        | 2/15 [00:14<01:36,  7.39s/it]Loading checkpoint shards:  13%|█▎        | 2/15 [00:14<01:36,  7.39s/it]Loading checkpoint shards:  13%|█▎        | 2/15 [00:14<01:35,  7.38s/it]Loading checkpoint shards:  13%|█▎        | 2/15 [00:14<01:36,  7.40s/it]Loading checkpoint shards:  13%|█▎        | 2/15 [00:14<01:36,  7.42s/it]Loading checkpoint shards:  13%|█▎        | 2/15 [00:19<02:00,  9.29s/it]Loading checkpoint shards:  20%|██        | 3/15 [00:21<01:25,  7.14s/it]Loading checkpoint shards:  20%|██        | 3/15 [00:21<01:25,  7.16s/it]Loading checkpoint shards:  20%|██        | 3/15 [00:21<01:25,  7.16s/it]Loading checkpoint shards:  20%|██        | 3/15 [00:21<01:25,  7.17s/it]Loading checkpoint shards:  20%|██        | 3/15 [00:21<01:26,  7.17s/it]Loading checkpoint shards:  20%|██        | 3/15 [00:21<01:26,  7.18s/it]Loading checkpoint shards:  20%|██        | 3/15 [00:21<01:26,  7.19s/it]Loading checkpoint shards:  20%|██        | 3/15 [00:26<01:39,  8.26s/it]Loading checkpoint shards:  27%|██▋       | 4/15 [00:29<01:20,  7.31s/it]Loading checkpoint shards:  27%|██▋       | 4/15 [00:29<01:20,  7.32s/it]Loading checkpoint shards:  27%|██▋       | 4/15 [00:29<01:20,  7.32s/it]Loading checkpoint shards:  27%|██▋       | 4/15 [00:29<01:20,  7.32s/it]Loading checkpoint shards:  27%|██▋       | 4/15 [00:29<01:20,  7.32s/it]Loading checkpoint shards:  27%|██▋       | 4/15 [00:29<01:20,  7.32s/it]Loading checkpoint shards:  27%|██▋       | 4/15 [00:29<01:20,  7.33s/it]Loading checkpoint shards:  27%|██▋       | 4/15 [00:35<01:34,  8.58s/it]Loading checkpoint shards:  33%|███▎      | 5/15 [00:37<01:17,  7.73s/it]Loading checkpoint shards:  33%|███▎      | 5/15 [00:37<01:17,  7.73s/it]Loading checkpoint shards:  33%|███▎      | 5/15 [00:37<01:17,  7.73s/it]Loading checkpoint shards:  33%|███▎      | 5/15 [00:37<01:17,  7.73s/it]Loading checkpoint shards:  33%|███▎      | 5/15 [00:37<01:17,  7.73s/it]Loading checkpoint shards:  33%|███▎      | 5/15 [00:37<01:17,  7.73s/it]Loading checkpoint shards:  33%|███▎      | 5/15 [00:37<01:17,  7.74s/it]Loading checkpoint shards:  40%|████      | 6/15 [00:45<01:09,  7.75s/it]Loading checkpoint shards:  40%|████      | 6/15 [00:45<01:09,  7.75s/it]Loading checkpoint shards:  40%|████      | 6/15 [00:45<01:09,  7.75s/it]Loading checkpoint shards:  40%|████      | 6/15 [00:45<01:09,  7.75s/it]Loading checkpoint shards:  40%|████      | 6/15 [00:45<01:09,  7.75s/it]Loading checkpoint shards:  40%|████      | 6/15 [00:45<01:09,  7.75s/it]Loading checkpoint shards:  40%|████      | 6/15 [00:45<01:09,  7.75s/it]Loading checkpoint shards:  33%|███▎      | 5/15 [00:45<01:33,  9.33s/it]Loading checkpoint shards:  40%|████      | 6/15 [00:50<01:08,  7.65s/it]Loading checkpoint shards:  47%|████▋     | 7/15 [00:52<01:00,  7.56s/it]Loading checkpoint shards:  47%|████▋     | 7/15 [00:52<01:00,  7.56s/it]Loading checkpoint shards:  47%|████▋     | 7/15 [00:52<01:00,  7.56s/it]Loading checkpoint shards:  47%|████▋     | 7/15 [00:52<01:00,  7.56s/it]Loading checkpoint shards:  47%|████▋     | 7/15 [00:52<01:00,  7.56s/it]Loading checkpoint shards:  47%|████▋     | 7/15 [00:52<01:00,  7.56s/it]Loading checkpoint shards:  47%|████▋     | 7/15 [00:52<01:00,  7.56s/it]Loading checkpoint shards:  47%|████▋     | 7/15 [00:56<00:58,  7.29s/it]Loading checkpoint shards:  53%|█████▎    | 8/15 [01:00<00:52,  7.55s/it]Loading checkpoint shards:  53%|█████▎    | 8/15 [01:00<00:52,  7.55s/it]Loading checkpoint shards:  53%|█████▎    | 8/15 [01:00<00:52,  7.55s/it]Loading checkpoint shards:  53%|█████▎    | 8/15 [01:00<00:52,  7.55s/it]Loading checkpoint shards:  53%|█████▎    | 8/15 [01:00<00:52,  7.55s/it]Loading checkpoint shards:  53%|█████▎    | 8/15 [01:00<00:52,  7.55s/it]Loading checkpoint shards:  53%|█████▎    | 8/15 [01:00<00:52,  7.55s/it]Loading checkpoint shards:  53%|█████▎    | 8/15 [01:04<00:51,  7.35s/it]Loading checkpoint shards:  60%|██████    | 9/15 [01:06<00:44,  7.36s/it]Loading checkpoint shards:  60%|██████    | 9/15 [01:06<00:44,  7.36s/it]Loading checkpoint shards:  60%|██████    | 9/15 [01:06<00:44,  7.36s/it]Loading checkpoint shards:  60%|██████    | 9/15 [01:07<00:44,  7.36s/it]Loading checkpoint shards:  60%|██████    | 9/15 [01:06<00:44,  7.36s/it]Loading checkpoint shards:  60%|██████    | 9/15 [01:07<00:44,  7.36s/it]Loading checkpoint shards:  60%|██████    | 9/15 [01:07<00:44,  7.36s/it]Loading checkpoint shards:  60%|██████    | 9/15 [01:11<00:43,  7.28s/it]Loading checkpoint shards:  67%|██████▋   | 10/15 [01:14<00:37,  7.50s/it]Loading checkpoint shards:  67%|██████▋   | 10/15 [01:14<00:37,  7.49s/it]Loading checkpoint shards:  67%|██████▋   | 10/15 [01:14<00:37,  7.49s/it]Loading checkpoint shards:  67%|██████▋   | 10/15 [01:14<00:37,  7.50s/it]Loading checkpoint shards:  67%|██████▋   | 10/15 [01:14<00:37,  7.50s/it]Loading checkpoint shards:  67%|██████▋   | 10/15 [01:14<00:37,  7.49s/it]Loading checkpoint shards:  67%|██████▋   | 10/15 [01:14<00:37,  7.50s/it]Loading checkpoint shards:  67%|██████▋   | 10/15 [01:19<00:38,  7.64s/it]Loading checkpoint shards:  73%|███████▎  | 11/15 [01:22<00:29,  7.45s/it]Loading checkpoint shards:  73%|███████▎  | 11/15 [01:22<00:29,  7.45s/it]Loading checkpoint shards:  73%|███████▎  | 11/15 [01:22<00:29,  7.45s/it]Loading checkpoint shards:  73%|███████▎  | 11/15 [01:22<00:29,  7.46s/it]Loading checkpoint shards:  73%|███████▎  | 11/15 [01:22<00:29,  7.45s/it]Loading checkpoint shards:  73%|███████▎  | 11/15 [01:22<00:29,  7.46s/it]Loading checkpoint shards:  73%|███████▎  | 11/15 [01:22<00:29,  7.46s/it]Loading checkpoint shards:  73%|███████▎  | 11/15 [01:27<00:30,  7.60s/it]Loading checkpoint shards:  80%|████████  | 12/15 [01:29<00:22,  7.50s/it]Loading checkpoint shards:  80%|████████  | 12/15 [01:29<00:22,  7.51s/it]Loading checkpoint shards:  80%|████████  | 12/15 [01:29<00:22,  7.51s/it]Loading checkpoint shards:  80%|████████  | 12/15 [01:29<00:22,  7.51s/it]Loading checkpoint shards:  80%|████████  | 12/15 [01:29<00:22,  7.51s/it]Loading checkpoint shards:  80%|████████  | 12/15 [01:29<00:22,  7.51s/it]Loading checkpoint shards:  80%|████████  | 12/15 [01:29<00:22,  7.51s/it]Loading checkpoint shards:  80%|████████  | 12/15 [01:34<00:22,  7.44s/it]Loading checkpoint shards:  87%|████████▋ | 13/15 [01:37<00:15,  7.59s/it]Loading checkpoint shards:  87%|████████▋ | 13/15 [01:37<00:15,  7.59s/it]Loading checkpoint shards:  87%|████████▋ | 13/15 [01:37<00:15,  7.59s/it]Loading checkpoint shards:  87%|████████▋ | 13/15 [01:37<00:15,  7.59s/it]Loading checkpoint shards:  87%|████████▋ | 13/15 [01:37<00:15,  7.59s/it]Loading checkpoint shards:  87%|████████▋ | 13/15 [01:37<00:15,  7.59s/it]Loading checkpoint shards:  87%|████████▋ | 13/15 [01:37<00:15,  7.59s/it]Loading checkpoint shards:  87%|████████▋ | 13/15 [01:41<00:14,  7.45s/it]Loading checkpoint shards:  93%|█████████▎| 14/15 [01:44<00:07,  7.33s/it]Loading checkpoint shards:  93%|█████████▎| 14/15 [01:44<00:07,  7.34s/it]Loading checkpoint shards:  93%|█████████▎| 14/15 [01:44<00:07,  7.34s/it]Loading checkpoint shards:  93%|█████████▎| 14/15 [01:44<00:07,  7.34s/it]Loading checkpoint shards:  93%|█████████▎| 14/15 [01:44<00:07,  7.34s/it]Loading checkpoint shards:  93%|█████████▎| 14/15 [01:44<00:07,  7.34s/it]Loading checkpoint shards:  93%|█████████▎| 14/15 [01:44<00:07,  7.34s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  5.25s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  6.98s/it]
-Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  5.24s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  6.98s/it]
-Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  5.25s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  5.25s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  6.98s/it]
-Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  6.98s/it]
-Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  5.25s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  6.98s/it]
-Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  5.25s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  6.98s/it]
-Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  5.25s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:44<00:00,  6.98s/it]
-Loading checkpoint shards:  93%|█████████▎| 14/15 [01:48<00:07,  7.05s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:48<00:00,  5.03s/it]Loading checkpoint shards: 100%|██████████| 15/15 [01:48<00:00,  7.23s/it]
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 3901 examples [00:01, 3774.26 examples/s]Generating train split: 3901 examples [00:01, 3704.04 examples/s]
-Generating validation split: 0 examples [00:00, ? examples/s]Generating validation split: 173 examples [00:00, 4822.00 examples/s]
-max_steps is given, it will override any value given in num_train_epochs
-PeftModelForCausalLM(
-  (base_model): LoraModel(
-    (model): LlamaForCausalLM(
-      (model): LlamaModel(
-        (embed_tokens): Embedding(32000, 8192)
-        (layers): ModuleList(
-          (0-79): 80 x LlamaDecoderLayer(
-            (self_attn): LlamaFlashAttention2(
-              (q_proj): Linear(in_features=8192, out_features=8192, bias=False)
-              (k_proj): Linear(in_features=8192, out_features=1024, bias=False)
-              (v_proj): Linear(in_features=8192, out_features=1024, bias=False)
-              (o_proj): lora.Linear(
-                (base_layer): Linear(in_features=8192, out_features=8192, bias=False)
-                (lora_dropout): ModuleDict(
-                  (default): Dropout(p=0.1, inplace=False)
-                )
-                (lora_A): ModuleDict(
-                  (default): Linear(in_features=8192, out_features=16, bias=False)
-                )
-                (lora_B): ModuleDict(
-                  (default): Linear(in_features=16, out_features=8192, bias=False)
-                )
-                (lora_embedding_A): ParameterDict()
-                (lora_embedding_B): ParameterDict()
-              )
-              (rotary_emb): LlamaRotaryEmbedding()
-            )
-            (mlp): LlamaMLP(
-              (gate_proj): Linear(in_features=8192, out_features=28672, bias=False)
-              (up_proj): Linear(in_features=8192, out_features=28672, bias=False)
-              (down_proj): Linear(in_features=28672, out_features=8192, bias=False)
-              (act_fn): SiLU()
-            )
-            (input_layernorm): LlamaRMSNorm((0,), eps=1e-05)
-            (post_attention_layernorm): LlamaRMSNorm((0,), eps=1e-05)
-          )
-        )
-        (norm): LlamaRMSNorm((0,), eps=1e-05)
-        (rotary_emb): LlamaRotaryEmbedding()
-      )
-max_steps is given, it will override any value given in num_train_epochs
-      (lm_head): Linear(in_features=8192, out_features=32000, bias=False)
-    )
-  )
-)
-max_steps is given, it will override any value given in num_train_epochs
-max_steps is given, it will override any value given in num_train_epochs
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-max_steps is given, it will override any value given in num_train_epochs
-max_steps is given, it will override any value given in num_train_epochs
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-max_steps is given, it will override any value given in num_train_epochs
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-max_steps is given, it will override any value given in num_train_epochs
-trainable params: 20,971,520 || all params: 68,997,619,712 || trainable%: 0.03039455576516454
-Using /root/.cache/torch_extensions/py310_cu124 as PyTorch extensions root...
-Creating extension directory /root/.cache/torch_extensions/py310_cu124/fused_adam...
-Detected CUDA files, patching ldflags
-Emitting ninja build file /root/.cache/torch_extensions/py310_cu124/fused_adam/build.ninja...
-/usr/local/lib/python3.10/dist-packages/torch/utils/cpp_extension.py:1968: UserWarning: TORCH_CUDA_ARCH_LIST is not set, all archs for visible cards are included for compilation. 
-If this is not desired, please set os.environ['TORCH_CUDA_ARCH_LIST'].
-  warnings.warn(
-Building extension module fused_adam...
-Allowing ninja to set a default number of workers... (overridable by setting the environment variable MAX_JOBS=N)
-Using /root/.cache/torch_extensions/py310_cu124 as PyTorch extensions root...
-Using /root/.cache/torch_extensions/py310_cu124 as PyTorch extensions root...
-Using /root/.cache/torch_extensions/py310_cu124 as PyTorch extensions root...
-Using /root/.cache/torch_extensions/py310_cu124 as PyTorch extensions root...
-Using /root/.cache/torch_extensions/py310_cu124 as PyTorch extensions root...
-Using /root/.cache/torch_extensions/py310_cu124 as PyTorch extensions root...
-Using /root/.cache/torch_extensions/py310_cu124 as PyTorch extensions root...
-[1/3] /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile --dependency-output multi_tensor_adam.cuda.o.d -DTORCH_EXTENSION_NAME=fused_adam -DTORCH_API_INCLUDE_EXTENSION_H -DPYBIND11_COMPILER_TYPE=\"_gcc\" -DPYBIND11_STDLIB=\"_libstdcpp\" -DPYBIND11_BUILD_ABI=\"_cxxabi1016\" -I/usr/local/lib/python3.10/dist-packages/deepspeed/ops/csrc/includes -I/usr/local/lib/python3.10/dist-packages/deepspeed/ops/csrc/adam -isystem /usr/local/lib/python3.10/dist-packages/torch/include -isystem /usr/local/lib/python3.10/dist-packages/torch/include/torch/csrc/api/include -isystem /usr/local/lib/python3.10/dist-packages/torch/include/TH -isystem /usr/local/lib/python3.10/dist-packages/torch/include/THC -isystem /usr/local/cuda/include -isystem /usr/include/python3.10 -D_GLIBCXX_USE_CXX11_ABI=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -gencode=arch=compute_90,code=compute_90 -gencode=arch=compute_90,code=sm_90 --compiler-options '-fPIC' -O3 -DVERSION_GE_1_1 -DVERSION_GE_1_3 -DVERSION_GE_1_5 -lineinfo --use_fast_math -gencode=arch=compute_90,code=sm_90 -gencode=arch=compute_90,code=compute_90 -DBF16_AVAILABLE -U__CUDA_NO_BFLOAT16_OPERATORS__ -U__CUDA_NO_BFLOAT162_OPERATORS__ -U__CUDA_NO_BFLOAT16_CONVERSIONS__ -std=c++17 -c /usr/local/lib/python3.10/dist-packages/deepspeed/ops/csrc/adam/multi_tensor_adam.cu -o multi_tensor_adam.cuda.o 
-[2/3] c++ -MMD -MF fused_adam_frontend.o.d -DTORCH_EXTENSION_NAME=fused_adam -DTORCH_API_INCLUDE_EXTENSION_H -DPYBIND11_COMPILER_TYPE=\"_gcc\" -DPYBIND11_STDLIB=\"_libstdcpp\" -DPYBIND11_BUILD_ABI=\"_cxxabi1016\" -I/usr/local/lib/python3.10/dist-packages/deepspeed/ops/csrc/includes -I/usr/local/lib/python3.10/dist-packages/deepspeed/ops/csrc/adam -isystem /usr/local/lib/python3.10/dist-packages/torch/include -isystem /usr/local/lib/python3.10/dist-packages/torch/include/torch/csrc/api/include -isystem /usr/local/lib/python3.10/dist-packages/torch/include/TH -isystem /usr/local/lib/python3.10/dist-packages/torch/include/THC -isystem /usr/local/cuda/include -isystem /usr/include/python3.10 -D_GLIBCXX_USE_CXX11_ABI=1 -fPIC -std=c++17 -O3 -std=c++17 -g -Wno-reorder -DVERSION_GE_1_1 -DVERSION_GE_1_3 -DVERSION_GE_1_5 -DBF16_AVAILABLE -c /usr/local/lib/python3.10/dist-packages/deepspeed/ops/csrc/adam/fused_adam_frontend.cpp -o fused_adam_frontend.o 
-[3/3] c++ fused_adam_frontend.o multi_tensor_adam.cuda.o -shared -L/usr/local/lib/python3.10/dist-packages/torch/lib -lc10 -lc10_cuda -ltorch_cpu -ltorch_cuda -ltorch -ltorch_python -L/usr/local/cuda/lib64 -lcudart -o fused_adam.so
-Loading extension module fused_adam...
-Time to load fused_adam op: 17.33531641960144 seconds
-Loading extension module fused_adam...
-Time to load fused_adam op: 17.129485607147217 seconds
-Loading extension module fused_adam...
-Time to load fused_adam op: 17.127960920333862 seconds
-Loading extension module fused_adam...
-Time to load fused_adam op: 17.128139972686768 seconds
-Loading extension module fused_adam...
-Time to load fused_adam op: 17.123907566070557 seconds
-Loading extension module fused_adam...
-Time to load fused_adam op: 17.227680206298828 seconds
-Loading extension module fused_adam...
-Time to load fused_adam op: 17.2258882522583 seconds
-Loading extension module fused_adam...
-Time to load fused_adam op: 17.225466012954712 seconds
-Parameter Offload: Total persistent parameters: 22290432 in 321 params
-[2025-09-10 04:04:19,613] [WARNING] [lr_schedules.py:855:get_lr] Attempting to get learning rate from scheduler before it has started
-[2025-09-10 04:04:19,613] [WARNING] [lr_schedules.py:855:get_lr] Attempting to get learning rate from scheduler before it has started
-[2025-09-10 04:04:19,618] [WARNING] [lr_schedules.py:855:get_lr] Attempting to get learning rate from scheduler before it has started
-[2025-09-10 04:04:19,618] [WARNING] [lr_schedules.py:855:get_lr] Attempting to get learning rate from scheduler before it has started
-[2025-09-10 04:04:19,618] [WARNING] [lr_schedules.py:855:get_lr] Attempting to get learning rate from scheduler before it has started
-[2025-09-10 04:04:19,619] [WARNING] [lr_schedules.py:855:get_lr] Attempting to get learning rate from scheduler before it has started
-[2025-09-10 04:04:19,620] [WARNING] [lr_schedules.py:855:get_lr] Attempting to get learning rate from scheduler before it has started
-[2025-09-10 04:04:19,691] [WARNING] [lr_schedules.py:855:get_lr] Attempting to get learning rate from scheduler before it has started
-:::MLLOG {"namespace": "", "time_ms": 1757477059702, "event_type": "POINT_IN_TIME", "key": "cache_clear", "value": "True", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 94}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "submission_benchmark", "value": "llama2_70b_lora", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 97}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "submission_division", "value": "closed", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 101}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "submission_org", "value": "referece", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 105}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "submission_platform", "value": "referece", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 108}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "submission_poc_name", "value": "referece", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 112}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "submission_poc_email", "value": "referece", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 116}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "submission_status", "value": "onprem", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 120}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "global_batch_size", "value": 128, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 124}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "train_samples", "value": 3901, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 128}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "eval_samples", "value": 173, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 132}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "seed", "value": 1234, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 136}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "opt_learning_rate_warmup_factor", "value": 0.0, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 137}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "opt_learning_rate_training_steps", "value": 1024, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 138}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "opt_adamw_weight_decay", "value": 0.01, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 139}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "opt_gradient_clip_norm", "value": 0.3, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 140}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "opt_base_learning_rate", "value": 0.0002, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 141}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "lora_alpha", "value": 32, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 142}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059703, "event_type": "POINT_IN_TIME", "key": "lora_rank", "value": 16, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 143}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059704, "event_type": "POINT_IN_TIME", "key": "gradient_accumulation_steps", "value": 4, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 144}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059704, "event_type": "INTERVAL_START", "key": "init_start", "value": "", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 145}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059704, "event_type": "INTERVAL_END", "key": "init_stop", "value": "", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 147}}
-:::MLLOG {"namespace": "", "time_ms": 1757477059704, "event_type": "INTERVAL_START", "key": "run_start", "value": "", "metadata": {"file": "mlperf_logging_utils.py", "lineno": 148}}
-{'loss': 3.6923, 'grad_norm': 0.14259017029406765, 'learning_rate': 0.00019996976690465763, 'epoch': 0.33}
-:::MLLOG {"namespace": "", "time_ms": 1757477711447, "event_type": "POINT_IN_TIME", "key": "train_loss", "value": 3.6923, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 166, "samples_count": 1280}}
-{'loss': 3.1054, 'grad_norm': 0.12982633154954343, 'learning_rate': 0.00019996173675092588, 'epoch': 0.36}
-{'loss': 2.6816, 'grad_norm': 0.1017640030537141, 'learning_rate': 0.00019984697628815657, 'epoch': 0.66}
-:::MLLOG {"namespace": "", "time_ms": 1757478361755, "event_type": "POINT_IN_TIME", "key": "train_loss", "value": 2.6816, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 166, "samples_count": 2560}}
-{'loss': 2.3618, 'grad_norm': 0.10319412698776555, 'learning_rate': 0.0001998295063258129, 'epoch': 0.69}
-{'loss': 2.0859, 'grad_norm': 0.09258663728476113, 'learning_rate': 0.00019962985451171147, 'epoch': 0.98}
-:::MLLOG {"namespace": "", "time_ms": 1757479012084, "event_type": "POINT_IN_TIME", "key": "train_loss", "value": 2.0859, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 166, "samples_count": 3840}}
-:::MLLOG {"namespace": "", "time_ms": 1757479028393, "event_type": "POINT_IN_TIME", "key": "train_loss", "value": 2.0859, "metadata": {"file": "mlperf_logging_utils.py", "lineno": 166, "samples_count": 3840}}
-{'loss': 3.2429, 'grad_norm': 0.1653063729188849, 'learning_rate': 0.00019960296124728352, 'epoch': 1.02}

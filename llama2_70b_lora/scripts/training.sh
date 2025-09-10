@@ -63,10 +63,10 @@ cat <<EOT >ds_config.json
 "optimizer": {
  "type": "Adam",
  "params": {
- "lr": 2e-4,
+ "lr": "auto",
  "betas": [0.9, 0.999],
  "eps": 1e-8,
- "weight_decay": 0.01,
+ "weight_decay": "auto",
  "torch_adam": false,
  "adam_w_mode": true
  }
@@ -152,15 +152,14 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --model_path $MODEL_PATH \
     --max_seq_len 8192 \
     --bf16 True \
-    --logging_steps 10 \
-    --num_train_epochs 1 \
-    --eval_steps 200 \
+    --logging_steps 24 \
+    --eval_steps 48 \
     --output_dir $OUTPUT_DIR \
     --per_device_train_batch_size $BATCH_SIZE_PER_GPU \
     --gradient_accumulation_steps $ACCUMULATION_STEPS \
     --lr_scheduler_type cosine \
-    --learning_rate 2e-4 \
-    --weight_decay 0.01 \
+    --learning_rate 4e-4 \
+    --weight_decay 0.0001 \
     --warmup_ratio 0 \
     --max_grad_norm 0.3 \
     --use_gradient_checkpointing True \
