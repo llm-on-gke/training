@@ -74,9 +74,9 @@ cat <<EOT >ds_config.json
 "scheduler": {
 "type": "WarmupCosineLR",
 "params": {
-"total_num_steps": 50000,
+"total_num_steps": "auto",
 "warmup_min_ratio": 0.03,
-"warmup_num_steps": 5000
+"warmup_num_steps": "auto"
 }
 },
 "zero_optimization": {
