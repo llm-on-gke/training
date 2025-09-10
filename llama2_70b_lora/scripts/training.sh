@@ -152,9 +152,9 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --model_path $MODEL_PATH \
     --max_seq_len 8192 \
     --bf16 True \
-    --logging_steps 24 \
+    --logging_steps 10 \
     --num_train_epochs 1 \
-    --eval_steps 48 \
+    --eval_steps 200 \
     --output_dir $OUTPUT_DIR \
     --per_device_train_batch_size $BATCH_SIZE_PER_GPU \
     --gradient_accumulation_steps $ACCUMULATION_STEPS \
