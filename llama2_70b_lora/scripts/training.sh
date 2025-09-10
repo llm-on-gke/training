@@ -61,23 +61,23 @@ cat <<EOT >ds_config.json
 "enabled": true
 },
 "optimizer": {
-        "type": "AdamW",
-        "params": {
-            "lr": "auto",
-            "betas": "auto",
-            "eps": "auto",
-            "weight_decay": "auto"
-        }
-    },
+"type": "Adam",
+"params": {
+"lr": 4e-4,
+"betas": [0.9, 0.999],
+"eps": 1e-8,
+"weight_decay": 0.0001,
+"torch_adam": true,
+"adam_w_mode": true
+}
+},
 "scheduler": {
-        "type": "WarmupDecayLR",
-        "params": {
-            "last_batch_iteration": -1,
-            "total_num_steps": "auto",
-            "warmup_min_lr": "auto",
-            "warmup_max_lr": "auto",
-            "warmup_num_steps": "auto"
-        }
+"type": "WarmupCosineLR",
+"params": {
+"total_num_steps": 50000,
+"warmup_min_ratio": 0.03,
+"warmup_num_steps": 5000
+}
 },
 "zero_optimization": {
 "stage": 3,
@@ -161,21 +161,4 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --lr_scheduler_type cosine \
     --learning_rate 4e-4 \
     --weight_decay 0.0001 \
-    --warmup_ratio 0 \
-    --max_grad_norm 0.3 \
-    --use_gradient_checkpointing True \
-    --target_eval_loss 0.925 \
-    --use_peft_lora True \
-    --lora_r 16 \
-    --lora_alpha 32 \
-    --lora_dropout 0.1 \
-    --max_steps 1024 \
-    --use_flash_attn True \
-    --seed 1234 \
-    --lora_target_modules "qkv_proj,o_proj" \
-    --deepspeed $DEEPSPEED_CONFIG
-
-
-echo "Training completed."
-
-                
+    --warmup_ratio
