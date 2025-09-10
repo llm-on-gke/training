@@ -64,7 +64,7 @@ cat <<EOT >ds_config.json
  "type": "FusedAdam ",
  "params": {
  "lr": 2e-4,
- "betas": [0.9, 0.98],
+ "betas": [0.9, 0.999],
  "eps": 1e-8,
  "weight_decay": 0.01,
  "torch_adam": true,
@@ -159,8 +159,8 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --per_device_train_batch_size $BATCH_SIZE_PER_GPU \
     --gradient_accumulation_steps $ACCUMULATION_STEPS \
     --lr_scheduler_type cosine \
-    --learning_rate 4e-4 \
-    --weight_decay 0.0001 \
+    --learning_rate 2e-4 \
+    --weight_decay 0.01 \
     --warmup_ratio 0 \
     --max_grad_norm 0.3 \
     --use_gradient_checkpointing True \
