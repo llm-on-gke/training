@@ -76,7 +76,7 @@ spec:
                 driver: gcsfuse.csi.storage.gke.io
                 readOnly: false
                 volumeAttributes:
-                   bucketName: rick-data-uw1
+                   bucketName: mdonati-h200-uscentral1
                    mountOptions: "implicit-dirs"
                    fileCacheCapacity: "-1Mi"
                    fileCacheForRangeRead: "true"
@@ -89,22 +89,22 @@ spec:
                 path: /mnt/stateful_partition/kube-ephemeral-ssd
             containers:
             - name: pytorch
-              image: us-east1-docker.pkg.dev/gpu-launchpad-playground/gke-llm/mlperf:latest
+              image: us-east1-docker.pkg.dev/northam-ce-mlai-tpu/gke-llm/mlperf:latest
               imagePullPolicy: Always
               # image: gcr.io/k8s-staging-jobset/pytorch-mnist:latest
               ports:
                - containerPort: 3389
               env:
-              - name: HF_TOKEN
-                valueFrom:
-                  secretKeyRef:
-                    name: huggingface
-                    key: HF_TOKEN
-              - name: HUGGING_FACE_HUB_TOKEN
-                valueFrom:
-                  secretKeyRef:
-                     name: huggingface
-                     key: HF_TOKEN
+              #- name: HF_TOKEN
+              #  valueFrom:
+              #    secretKeyRef:
+              #      name: huggingface
+              #      key: HF_TOKEN
+              #- name: HUGGING_FACE_HUB_TOKEN
+              #  valueFrom:
+              #    secretKeyRef:
+              #      name: huggingface
+              #      key: HF_TOKEN
               - name: MASTER_ADDR
                 value: "train-workers-0-0.train"
               - name: hostname_prefix

@@ -161,4 +161,16 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --lr_scheduler_type cosine \
     --learning_rate 4e-4 \
     --weight_decay 0.0001 \
-    --warmup_ratio
+    --warmup_ratio 0 \
+    --max_grad_norm 0.3 \
+    --use_gradient_checkpointing True \
+    --target_eval_loss 0.925 \
+    --use_peft_lora True \
+    --lora_r 16 \
+    --lora_alpha 32 \
+    --lora_dropout 0.1 \
+    --max_steps 1024 \
+    --use_flash_attn True \
+    --seed 1234 \
+    --lora_target_modules "qkv_proj,o_proj" \
+    --deepspeed $DEEPSPEED_CONFIG
