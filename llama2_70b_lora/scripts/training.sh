@@ -61,16 +61,16 @@ cat <<EOT >ds_config.json
 "enabled": true
 },
 "optimizer": {
-"type": "Adam",
-"params": {
-"lr": 4e-4,
-"betas": [0.9, 0.999],
-"eps": 1e-8,
-"weight_decay": 0.0001,
-"torch_adam": true,
-"adam_w_mode": true
-}
-},
+ "type": "FusedAdam ",
+ "params": {
+ "lr": 2e-4,
+ "betas": [0.9, 0.98],
+ "eps": 1e-8,
+ "weight_decay": 0.01,
+ "torch_adam": true,
+ "adam_w_mode": true
+ }
+ },
 "scheduler": {
 "type": "WarmupCosineLR",
 "params": {
