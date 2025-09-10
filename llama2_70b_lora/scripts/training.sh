@@ -61,13 +61,13 @@ cat <<EOT >ds_config.json
 "enabled": true
 },
 "optimizer": {
- "type": "FusedAdam ",
+ "type": "Adam",
  "params": {
  "lr": 2e-4,
  "betas": [0.9, 0.999],
  "eps": 1e-8,
  "weight_decay": 0.01,
- "torch_adam": true,
+ "torch_adam": false,
  "adam_w_mode": true
  }
  },
