@@ -9,9 +9,9 @@ MASTER_PORT=3389
 NODE_RANK="$NODE_RANK"
 NUM_NODES="$NODE_COUNT"
 NUM_GPU_PER_NODE=8
-BATCH_SIZE_PER_GPU=${6:-"2"}
+BATCH_SIZE_PER_GPU=${6:-"1"}
 #ACCUMULATION_BATCH_SIZE=4
-ACCUMULATION_STEPS=${7:-"4"}
+ACCUMULATION_STEPS=${7:-"2"}
 NUM_CPU_CORES=8
 
 # --- Paths ---
@@ -152,13 +152,13 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --model_path $MODEL_PATH \
     --max_seq_len 8192 \
     --bf16 True \
-    --logging_steps 24 \
-    --eval_steps 48 \
+    --logging_steps 6 \
+    --eval_steps 12 \
     --output_dir $OUTPUT_DIR \
     --per_device_train_batch_size $BATCH_SIZE_PER_GPU \
     --gradient_accumulation_steps $ACCUMULATION_STEPS \
     --lr_scheduler_type cosine \
-    --learning_rate 4e-4 \
+    --learning_rate 6e-4 \
     --weight_decay 0.0001 \
     --warmup_ratio 0 \
     --max_grad_norm 0.3 \
@@ -168,7 +168,7 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --lora_r 16 \
     --lora_alpha 32 \
     --lora_dropout 0.1 \
-    --max_steps 1024 \
+    --max_steps 896 \
     --use_flash_attn True \
     --seed 1234 \
     --lora_target_modules "qkv_proj,o_proj" \
