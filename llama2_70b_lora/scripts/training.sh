@@ -67,7 +67,7 @@ cat <<EOT >ds_config.json
  "betas": [0.9, 0.999],
  "eps": 1e-8,
  "weight_decay": "auto",
- "torch_adam": true,
+ "torch_adam": false,
  "adam_w_mode": true
  }
  },
