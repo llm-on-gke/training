@@ -11,7 +11,7 @@ NUM_NODES="$NODE_COUNT"
 NUM_GPU_PER_NODE=8
 BATCH_SIZE_PER_GPU=${6:-"1"}
 #ACCUMULATION_BATCH_SIZE=4
-ACCUMULATION_STEPS=${7:-"2"}
+ACCUMULATION_STEPS=${7:-"1"}
 NUM_CPU_CORES=8
 
 # --- Paths ---
@@ -158,7 +158,7 @@ PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" OMP_NUM_THREADS=$NUM_CPU_CORE
     --per_device_train_batch_size $BATCH_SIZE_PER_GPU \
     --gradient_accumulation_steps $ACCUMULATION_STEPS \
     --lr_scheduler_type cosine \
-    --learning_rate 6e-4 \
+    --learning_rate 3e-4 \
     --weight_decay 0.0001 \
     --warmup_ratio 0 \
     --max_grad_norm 0.3 \
